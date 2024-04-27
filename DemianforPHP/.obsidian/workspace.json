@@ -85,7 +85,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Строки.md",
+                "file": "Учебный план.md",
                 "mode": "source",
                 "source": false
               }
@@ -172,7 +172,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Строки.md",
+                "file": "Учебный план.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -189,7 +189,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Строки.md",
+                "file": "Учебный план.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -212,7 +212,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Строки.md"
+                "file": "Учебный план.md"
               }
             }
           }
@@ -236,14 +236,14 @@
   "active": "a5f04dbd09ea0b49",
   "lastOpenFiles": [
     "Условия и рекурсия.md",
+    "Строки.md",
+    "ООП.md",
+    "Массивы.md",
+    "Итерации(циклы).md",
     "Функции.md",
     "Переменные.md",
     "Учебный план.md",
-    "Массивы.md",
-    "Строки.md",
     "Новый ярлык.lnk",
-    "ООП.md",
-    "Итерации(циклы).md",
     "Untitled",
     "Welcome.md"
   ]
