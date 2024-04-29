@@ -61,7 +61,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Переменные и выражения.md",
+                "file": "Массивы.md",
                 "mode": "source",
                 "source": false
               }
@@ -160,7 +160,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Переменные и выражения.md",
+                "file": "Массивы.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -177,7 +177,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Переменные и выражения.md",
+                "file": "Массивы.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -200,7 +200,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Переменные и выражения.md"
+                "file": "Массивы.md"
               }
             }
           }
@@ -223,13 +223,13 @@
   },
   "active": "ed436a9dec2c93f8",
   "lastOpenFiles": [
-    "Учебный план.md",
-    "Переменные и выражения.md",
-    "Классы и основы ООП.md",
     "Функции.md",
-    "Строки.md",
-    "Массивы.md",
+    "Переменные и выражения.md",
+    "Учебный план.md",
     "Условия и рекурсия.md",
+    "Массивы.md",
+    "Классы и основы ООП.md",
+    "Строки.md",
     "Итерации (Циклы).md",
     "==Типы данных==.md",
     "sandbox.php",
