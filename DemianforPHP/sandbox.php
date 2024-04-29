@@ -1,12 +1,12 @@
 <?php
 
-function evenNoEven(array $array, int $value)
-{
-	$result = array_filter($array, function ($item) use ($value) {
-		return $item % $value != 0;
-	});
+$arr = [2, 3, 7, 9];
 
-	return array_values($result);
+function addFive($item)
+{
+	return $item + 5;
 }
 
-print_r(evenNoEven([22, 9, 11, 3, 44, 2], 2));
+$result = array_map('addFive', $arr);
+
+print_r($result);
