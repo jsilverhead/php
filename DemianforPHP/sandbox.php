@@ -2,11 +2,8 @@
 
 $arr = [2, 3, 7, 9];
 
-function addFive($item)
-{
+$result = array_map(function ($item) {
 	return $item + 5;
-}
-
-$result = array_map('addFive', $arr);
+}, $arr);
 
 print_r($result);
