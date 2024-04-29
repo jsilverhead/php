@@ -25,7 +25,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Функции.md",
+                "file": "2. Функции.md",
                 "mode": "source",
                 "source": false
               }
@@ -37,7 +37,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Условия и рекурсия.md",
+                "file": "3. Условия и рекурсия.md",
                 "mode": "source",
                 "source": false
               }
@@ -49,7 +49,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Итерации (Циклы).md",
+                "file": "4. Итерации (Циклы).md",
                 "mode": "source",
                 "source": false
               }
@@ -61,7 +61,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Массивы.md",
+                "file": "Учебный план.md",
                 "mode": "source",
                 "source": false
               }
@@ -113,7 +113,7 @@
             "state": {
               "type": "file-explorer",
               "state": {
-                "sortOrder": "byCreatedTimeReverse"
+                "sortOrder": "alphabetical"
               }
             }
           },
@@ -160,7 +160,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Массивы.md",
+                "file": "Учебный план.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -177,7 +177,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Массивы.md",
+                "file": "Учебный план.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -200,7 +200,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Массивы.md"
+                "file": "Учебный план.md"
               }
             }
           }
@@ -223,14 +223,14 @@
   },
   "active": "ed436a9dec2c93f8",
   "lastOpenFiles": [
-    "Функции.md",
-    "Переменные и выражения.md",
+    "6. Классы и основы ООП.md",
     "Учебный план.md",
-    "Условия и рекурсия.md",
-    "Массивы.md",
-    "Классы и основы ООП.md",
+    "5. Массивы.md",
+    "4. Итерации (Циклы).md",
+    "3. Условия и рекурсия.md",
+    "2. Функции.md",
+    "1. Переменные и выражения.md",
     "Строки.md",
-    "Итерации (Циклы).md",
     "==Типы данных==.md",
     "sandbox.php",
     "Новый ярлык.lnk",
