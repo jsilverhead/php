@@ -2,19 +2,9 @@
 
 abstract class Sandbox
 {
-	public int $id;
-
-	abstract function getId();
-}
-
-class box extends Sandbox
-{
-	public function getId()
+	public string $a;
+	function getInfo()
 	{
-		return $this->id;
+		return $this->a;
 	}
 }
-
-$box1 = new box;
-$box1->id = 22;
-echo $box1->getId();
