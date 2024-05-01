@@ -1,21 +1,33 @@
 <?php
-
-class Sandbox
+trait noNegative
 {
-	private int $id = 42;
-
-	public function __get($name)
+	public function checkNehative($array)
 	{
-		echo "Getting $name: $this->id \n";
-	}
-	public function __set($name, $value)
-	{
-		echo "Setting $name: ";
+		return array_filter($array, function ($item) {
+			return $item >= 0;
+		});
 	}
 }
 
-$example = new Sandbox;
+trait notEven
+{
+	public function checkEven($array)
+	{
+		return array_filter($array, function ($item) {
+			return $item % 2 != 0;
+		});
+	}
+}
 
-echo $example->id;
+class checkArray
+{
+	use noNegative, notEven;
+}
 
-echo $example->id = 0;
+$array = [0, 22, -1, 1, 31, 42, 99, 69, 77, -100];
+$checkArray = new checkArray;
+
+$array = $checkArray->checkNehative($array);
+$array = $checkArray->checkEven($array);
+
+print_r($array);
