@@ -1,10 +1,21 @@
 <?php
 
-abstract class Sandbox
+class Sandbox
 {
-	public string $a;
-	function getInfo()
+	private int $id = 42;
+
+	public function __get($name)
 	{
-		return $this->a;
+		echo "Getting $name: $this->id \n";
+	}
+	public function __set($name, $value)
+	{
+		echo "Setting $name: ";
 	}
 }
+
+$example = new Sandbox;
+
+echo $example->id;
+
+echo $example->id = 0;
