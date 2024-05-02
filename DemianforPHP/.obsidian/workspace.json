@@ -73,21 +73,33 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Учебный план.md",
+                "file": "6. Классы и основы ООП.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "c58cd0af993f4e9a",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "7. Try Catch.md",
                 "mode": "source",
                 "source": false
               }
             }
           }
         ],
-        "currentTab": 4
+        "currentTab": 6
       },
       {
-        "id": "5c67c382d183c90e",
+        "id": "a472262ea2ae05b3",
         "type": "tabs",
         "children": [
           {
-            "id": "63538b611c29e2a1",
+            "id": "3e421d10df73adc7",
             "type": "leaf",
             "state": {
               "type": "graph",
@@ -160,6 +172,7 @@
             "state": {
               "type": "backlink",
               "state": {
+                "file": "7. Try Catch.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -176,6 +189,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
+                "file": "7. Try Catch.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -197,7 +211,9 @@
             "type": "leaf",
             "state": {
               "type": "outline",
-              "state": {}
+              "state": {
+                "file": "7. Try Catch.md"
+              }
             }
           }
         ]
@@ -217,13 +233,14 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "63538b611c29e2a1",
+  "active": "c58cd0af993f4e9a",
   "lastOpenFiles": [
+    "Учебный план.md",
+    "7. Try Catch.md",
     "6. Классы и основы ООП.md",
     "5. Массивы.md",
     "3. Условия и рекурсия.md",
     "4. Итерации (Циклы).md",
-    "Учебный план.md",
     "2. Функции.md",
     "1. Переменные и выражения.md",
     "Строки.md",
