@@ -90,9 +90,21 @@
                 "source": false
               }
             }
+          },
+          {
+            "id": "02d27265d04e2f39",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Учебный план.md",
+                "mode": "source",
+                "source": false
+              }
+            }
           }
         ],
-        "currentTab": 6
+        "currentTab": 7
       },
       {
         "id": "a472262ea2ae05b3",
@@ -172,7 +184,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "7. Try Catch.md",
+                "file": "Учебный план.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -189,7 +201,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "7. Try Catch.md",
+                "file": "Учебный план.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -212,7 +224,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "7. Try Catch.md"
+                "file": "Учебный план.md"
               }
             }
           }
@@ -233,10 +245,11 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "c58cd0af993f4e9a",
+  "active": "02d27265d04e2f39",
   "lastOpenFiles": [
-    "Учебный план.md",
+    "8. Позднее связывание.md",
     "7. Try Catch.md",
+    "Учебный план.md",
     "6. Классы и основы ООП.md",
     "5. Массивы.md",
     "3. Условия и рекурсия.md",
