@@ -271,6 +271,17 @@
   },
   "active": "25da5c3fe55ebd97",
   "lastOpenFiles": [
+    "sandbox/sandbox.php",
+    "sandbox/crud/config/connection.php",
+    "sandbox/crud/config",
+    "sandbox/crud/actions/delete.php",
+    "sandbox/crud/actions/update.php",
+    "sandbox/crud/actions/create.php",
+    "sandbox/crud/actions/addcomment.php",
+    "sandbox/crud/actions",
+    "sandbox/crud/viewhouse.php",
+    "sandbox/crud/updateform.php",
+    "sandbox/crud/index.php",
     "9. Fibers.md",
     "Учебный план.md",
     "10. Базы данных.md",
@@ -284,9 +295,6 @@
     "1. Переменные и выражения.md",
     "Строки.md",
     "==Типы данных==.md",
-    "sandbox.php",
-    "Новый ярлык.lnk",
-    "Untitled",
     "Welcome.md"
   ]
 }
