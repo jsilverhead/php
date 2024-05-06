@@ -1,23 +1,11 @@
 <?php
 
-class A
+function countNums($a, $b)
 {
-	public static function who()
-	{
-		echo __CLASS__;
-	}
-	public static function test()
-	{
-		static::who(); // Здесь действует позднее статическое связывание
-	}
+    return $a + $b;
 }
 
-class B extends A
-{
-	public static function who()
-	{
-		echo __CLASS__;
-	}
-}
+echo countNums(...[2, 5, 9]) . "\n"; // Пересчитает 2, 5
 
-B::test();
+$getSum = [8, 8];
+echo countNums(...$getSum) . "\n"; // Пересчитает 8 и 8
