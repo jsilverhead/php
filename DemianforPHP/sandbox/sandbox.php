@@ -1,5 +1,5 @@
 <?php
 
-$array = [1, 6, "mother"];
+$points = [1190, 1, 6, 1];
 
-echo join('.', $array);
+echo array_sum($points);

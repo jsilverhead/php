@@ -1,0 +1,169 @@
+{
+  "main": {
+    "id": "ced7c8d9b959af84",
+    "type": "split",
+    "children": [
+      {
+        "id": "84792ce56b4c06b6",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "02cd3ec03c436381",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "DemianforPHP/5. Массивы.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "4985890f8054b1c8",
+    "type": "split",
+    "children": [
+      {
+        "id": "01a6b527911df2db",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "4aefa6027fc40b67",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "28895128e7604824",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "8de46bdcf013ebeb",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {}
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "207853e73e602e1a",
+    "type": "split",
+    "children": [
+      {
+        "id": "cdddfb3af9a45a58",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "441adde64c9b1de2",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "DemianforPHP/5. Массивы.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "6bf50b86abdb1214",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "DemianforPHP/5. Массивы.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "7c8535779743ad36",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true
+              }
+            }
+          },
+          {
+            "id": "5f6ceaf52d15564f",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "DemianforPHP/5. Массивы.md"
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false
+    }
+  },
+  "active": "02cd3ec03c436381",
+  "lastOpenFiles": [
+    "DemianforPHP/4. Итерации (Циклы).md",
+    "DemianforPHP/5. Массивы.md",
+    "DemianforPHP/Учебный план.md",
+    "DemianforPHP/10. Базы данных.md",
+    "DemianforPHP/9. Fibers.md",
+    "DemianforPHP/8. Позднее связывание.md",
+    "DemianforPHP/7. Try Catch.md",
+    "DemianforPHP/6. Классы и основы ООП.md",
+    "Project/Server/server.py",
+    "Project/Server/index.html",
+    "Project/Server/Dockerfile",
+    "Project/Server",
+    "Project/docker-compose.yml",
+    "Project/Client",
+    "Project",
+    "DemianforPHP/2. Функции.md",
+    "DemianforPHP/1. Переменные и выражения.md"
+  ]
+}
