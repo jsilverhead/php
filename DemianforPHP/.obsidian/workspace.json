@@ -121,7 +121,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "7. Try Catch.md",
+                "file": "1. Переменные и выражения.md",
                 "mode": "source",
                 "source": false
               }
@@ -208,7 +208,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "7. Try Catch.md",
+                "file": "1. Переменные и выражения.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -225,7 +225,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "7. Try Catch.md",
+                "file": "1. Переменные и выражения.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -248,7 +248,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "7. Try Catch.md"
+                "file": "1. Переменные и выражения.md"
               }
             }
           }
@@ -271,16 +271,16 @@
   },
   "active": "25da5c3fe55ebd97",
   "lastOpenFiles": [
-    "8. Позднее связывание.md",
-    "9. Fibers.md",
-    "6. Классы и основы ООП.md",
-    "3. Условия и рекурсия.md",
-    "1. Переменные и выражения.md",
-    "4. Итерации (Циклы).md",
-    "7. Try Catch.md",
-    "5. Массивы.md",
-    "2. Функции.md",
     "10. Базы данных.md",
+    "9. Fibers.md",
+    "8. Позднее связывание.md",
+    "7. Try Catch.md",
+    "2. Функции.md",
+    "1. Переменные и выражения.md",
+    "6. Классы и основы ООП.md",
+    "4. Итерации (Циклы).md",
+    "5. Массивы.md",
+    "3. Условия и рекурсия.md",
     "sandbox/pdo/index.php",
     "sandbox/pdo/config",
     "sandbox/pdo/actions",
