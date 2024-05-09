@@ -317,7 +317,8 @@
         }
         static function overallSum()
         {
-            return self::$overallprice = array_sum(self::$finalPrice);
+            self::$overallprice = array_sum(self::$finalPrice);
+            return self::$overallprice;
         }
     }
 
