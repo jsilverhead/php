@@ -208,44 +208,51 @@
             </div>
             <div class="orders">
                 <div class="column1">
-                    <div class="row"><label class="label">Эспрессо 80р.<input type="checkbox" name="order" id="1order"
-                                onchange="<? $espresso->checkOne($value) ?>"><span class="pressed"></span></label>
-                        <input type="number" name="price" id="order1-num" class="numbers" min="0" value="0"
-                            data-check="1" onchange="<? $espresso->__set($name = 'price', $value) ?>">
+                    <div class="row"><label class="label">Эспрессо 80р.<input type="checkbox" name="checkbox"
+                                id="1order" onchange="<? $espresso->checkOne($value) ?>"
+                                value="<? $espresso->count ?>"><span class="pressed"></span></label>
+                        <input type="number" name="price" class="numbers" min="0" value="<? $espresso->price ?>"
+                            onchange="<? $espresso->inputChange($value) ?>">
                     </div><br>
                     <div class="row"><label class="label">Американо 110р.<input type="checkbox" name="order"
-                                onchange="<? $espresso->checkOne($value) ?>" id="2order"><span
+                                onchange="<? $americano->checkOne($value) ?>" value="<? $americano->count ?>"><span
                                 class="pressed"></span></label> <input type="number" name="order2-num" id="order2-num"
-                            class="numbers" min="0" value="0" data-check="2"></div><br>
+                            class="numbers" min="0" value="<? $americano->price ?>"
+                            onchange="<? $americano->inputChange($value) ?>">
+                    </div><br>
                     <div class="row"><label class="label">Латте 120р.<input type="checkbox" name="order"
-                                onchange="<? $espresso->checkOne($value) ?>" id="3order"><span
+                                onchange="<? $latte->checkOne($value) ?>" value="<? $latte->count ?>"><span
                                 class="pressed"></span></label> <input type="number" name="order3-num" id="order3-num"
-                            class="numbers" min="0" value="0" data-check="3"></div><br>
+                            class="numbers" min="0" value="<? $latte->price ?>"
+                            onchange="<? $latte->inputChange($value) ?>">
+                    </div><br>
                     <div class="row"><label class="label">Капучино 90р.<input type="checkbox" name="order"
-                                onchange="<? $espresso->checkOne($value) ?>" id="4order"><span
+                                onchange="<? $capuccino->checkOne($value) ?>" value="<? $capuccino->count ?>"><span
                                 class="pressed"></span></label> <input type="number" name="order4-num" id="order4-num"
-                            class="numbers" min="0" value="0" data-check="4"></div><br>
+                            class="numbers" min="0" value="<? $capuccino->price ?>"
+                            onchange="<? $capuccino->inputChange($value) ?>">
+                    </div><br>
                 </div>
                 <div class="column2">
                     <div class="row"><label class="label">Шоколадный кекс 80р.<input type="checkbox" name="order"
-                                onchange="<? $espresso->checkOne($value) ?>" id="5order"><span
+                                onchange="<? $brownie->checkOne($value) ?>" value="<? $brownie->count ?>"><span
                                 class="pressed"></span></label> <input type="number" name="order4-num" id="order5-num"
-                            class="numbers" min="0" value="0" data-check="5"></div>
+                            class="numbers" min="0" value="<? $brownie->price ?>" data-check="5"></div>
                     <br>
                     <div class="row"><label class="label">Черничный кекс 90р.<input type="checkbox" name="order"
-                                onchange="<? $espresso->checkOne($value) ?>" id="6order"><span
+                                onchange="<? $berryPie->checkOne($value) ?>" value="<? $berryPie->count ?>"><span
                                 class="pressed"></span></label> <input type="number" name="order5-num" id="order6-num"
-                            class="numbers" min="0" value="0" data-check="6"></div>
+                            class="numbers" min="0" value="<? $berryPie->price ?>" data-check="6"></div>
                     <br>
                     <div class="row"><label class="label">Яблочный тарт 100р.<input type="checkbox" name="order"
-                                onchange="<? $espresso->checkOne($value) ?>" id="7order"><span
+                                onchange="<? $applePie->checkOne($value) ?>" value="<? $applePie->count ?>"><span
                                 class="pressed"></span></label> <input type="number" name="order6-num" id="order7-num"
-                            class="numbers" min="0" value="0" data-check="7"></div>
+                            class="numbers" min="0" value="<? $applePie->price ?>" data-check="7"></div>
                     <br>
                 </div>
             </div>
             <div class="results">
-                <p>Итого: <span id="result">0 р.</span></p>
+                <p>Итого: <span id="result"><? echo countItems::$overallprice ?> р.</span></p>
                 <button id="btn" class="btn">Оформить заказ</button>
             </div>
         </div>
@@ -255,7 +262,7 @@
     {
         protected string $name;
         protected int $price;
-        private int $count;
+        private int $count = 0;
 
         public function __construct($name, $price)
         {
@@ -263,20 +270,37 @@
             $this->price = $price;
         }
 
-        public function __set($name, $value)
+        public function inputChange($value)
         {
-
+            $this->count = $value;
+            countItems::countItems($this->price, $this->count);
+            countItems::overallSum();
         }
+
         public function __get($name)
         {
-            echo $name;
+            if ($name === $this->count && $this->count > 0) {
+                return true;
+            } elseif ($name === $this->price) {
+                return $this->count;
+            } else {
+                return false;
+            }
         }
+
         public function checkOne($value)
         {
             if (true === $value) {
                 $this->count = 1;
+                $sum = $this->count * $this->price;
+                array_push(countItems::$finalPrice, $sum);
+                countItems::countItems($this->price, $this->count);
+                countItems::overallSum();
             } else {
                 $this->count = 0;
+                countItems::$finalPrice = [];
+                countItems::countItems($this->price, $this->count);
+                countItems::overallSum();
             }
         }
     }
@@ -284,7 +308,7 @@
     class countItems
     {
         static array $finalPrice;
-        static int $overallprice;
+        static int $overallprice = 0;
 
         static function countItems($price, $items)
         {
@@ -293,7 +317,7 @@
         }
         static function overallSum()
         {
-            self::$overallprice = array_sum(self::$finalPrice);
+            return self::$overallprice = array_sum(self::$finalPrice);
         }
     }
 
@@ -301,10 +325,9 @@
     $americano = new Coffeemenu('americano', 110);
     $latte = new Coffeemenu('latte', 120);
     $capuccino = new Coffeemenu('capuccino', 90);
-    $applePie = new Coffeemenu('apple pie', 200);
-    $cherryPie = new Coffeemenu('cherry pie', 220);
-    $brownie = new Coffeemenu('brownie', 150);
-    $tip = new Coffeemenu('tip', 10);
+    $applePie = new Coffeemenu('apple pie', 100);
+    $berryPie = new Coffeemenu('berry pie', 90);
+    $brownie = new Coffeemenu('brownie', 80);
     ?>
 </body>
 
