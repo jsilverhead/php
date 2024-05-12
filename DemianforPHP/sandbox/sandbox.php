@@ -2,11 +2,17 @@
 
 class Sandbox
 {
-    public int $value = 42;
+    public function example($arg = 5)
+    {
+        return "$arg sample";
+    }
 
 }
 
 class box extends Sandbox
 {
-    private int $value = 42;
+    public function example($arg)
+    {
+        return 'no sample';
+    }
 }
