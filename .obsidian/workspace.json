@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "DemianforPHP/Учебный план.md",
+                "file": "DemianforPHP/6. Классы и основы ООП.md",
                 "mode": "source",
                 "source": false
               }
@@ -85,7 +85,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "DemianforPHP/Учебный план.md",
+                "file": "DemianforPHP/6. Классы и основы ООП.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -102,7 +102,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "DemianforPHP/Учебный план.md",
+                "file": "DemianforPHP/6. Классы и основы ООП.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -125,7 +125,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "DemianforPHP/Учебный план.md"
+                "file": "DemianforPHP/6. Классы и основы ООП.md"
               }
             }
           }
@@ -148,11 +148,11 @@
   },
   "active": "02cd3ec03c436381",
   "lastOpenFiles": [
+    "DemianforPHP/Учебный план.md",
     "DemianforPHP/8. Позднее связывание.md",
     "DemianforPHP/10. Базы данных.md",
     "DemianforPHP/5. Массивы.md",
     "DemianforPHP/4. Итерации (Циклы).md",
-    "DemianforPHP/Учебный план.md",
     "DemianforPHP/9. Fibers.md",
     "DemianforPHP/7. Try Catch.md",
     "DemianforPHP/6. Классы и основы ООП.md",

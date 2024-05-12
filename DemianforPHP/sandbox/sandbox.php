@@ -1,18 +1,11 @@
 <?php
 
+namespace Example;
+
 class Sandbox
 {
-    public function example($arg = 5)
-    {
-        return "$arg sample";
-    }
-
+    public $arg = NULL;
 }
 
-class box extends Sandbox
-{
-    public function example(string $arg = "5")
-    {
-        return 'no sample';
-    }
-}
+$sandbox = new Sandbox;
+echo $agentName = $sandbox?->arg + 1;
