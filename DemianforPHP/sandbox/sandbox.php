@@ -11,7 +11,7 @@ class Sandbox
 
 class box extends Sandbox
 {
-    public function example($arg)
+    public function example(string $arg = "5")
     {
         return 'no sample';
     }
