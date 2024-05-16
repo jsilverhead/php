@@ -23,6 +23,7 @@ final class Launch
 
         for ($i = $this->countDown; $i != 0; $i--) {
             echo $i . PHP_EOL;
+            usleep(1000);
             --$i;
         }
 

@@ -1,16 +1,21 @@
 <?php
 
-class Sandbox
+enum Suit: string
 {
-    public string $name = 'John';
-    private string $fullname = 'Week';
-    protected int $age = 40;
-
-    public function __debugInfo()
-    {
-        echo "what do you wanna know? It's protected.";
-    }
+    case Hearts = 'Hearts';
+    case Diamonds = 'Diamons';
+    case Clubs = 'Clubs';
+    case Spades = 'Spades';
 }
 
-$sandbox = new Sandbox;
-var_dump($sandbox);
+function Sandbox($arg)
+{
+    return match ($arg) {
+        Suit::Diamonds->value => 'Брильянт',
+        Suit::Spades->value => 'Пика точёная',
+        Suit::Clubs->value => 'Дубинка же',
+        Suit::Hearts->value => 'Лайк'
+    };
+}
+
+echo Sandbox('Spades');
