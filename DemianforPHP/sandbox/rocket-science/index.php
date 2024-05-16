@@ -21,6 +21,21 @@
 		<button type="submit">Try Launch</button>
 	</form>
 	<?php
+	use rockets\rocket\Rocket;
+
+	require __DIR__ . '\rocket.php';
+	require __DIR__ . '\launch.php';
+	require __DIR__ . '\enginetypes.php';
+
+	$mass = $_POST['mass'];
+	$fuelMass = $_POST['fuelMass'];
+	$engine = $_POST['engine'];
+
+	if ($engine instanceof engineTypes) {
+		$rocket = new Rocket($engine, $mass, $fuelMass);
+	}
+
+
 	?>
 </body>
 

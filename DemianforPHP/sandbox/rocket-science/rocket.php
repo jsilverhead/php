@@ -10,10 +10,11 @@ class Rocket
 
 	protected int $impulse;
 
-	public function __construct($countdown, $type)
+	public function __construct(string $engine, int $mass, int $fuelMass)
 	{
-		$this->countdown = $countdown;
-		$this->type = $type;
+		$this->engine = $engine;
+		$this->mass = $mass;
+		$this->fuelMass = $fuelMass;
 	}
 }
 
