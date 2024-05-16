@@ -17,7 +17,11 @@
 		<label>Fuel Mass:</label><br>
 		<input type="number" name="fuelMass">
 		<br>
-		<input type="dropdown" name="engine"><br>
+		<select name="engine">
+			<option value="<? engineTypes::nuclear ?>">Ядерный</option>
+			<option value="<? engineTypes::chemical ?>">Химический</option>
+			<option value="<? engineTypes::electrical ?>">Электрический</option>
+		</select><br>
 		<button type="submit">Try Launch</button>
 	</form>
 	<?php
@@ -31,10 +35,7 @@
 	$fuelMass = $_POST['fuelMass'];
 	$engine = $_POST['engine'];
 
-	if ($engine instanceof engineTypes) {
-		$rocket = new Rocket($engine, $mass, $fuelMass);
-	}
-
+	$rocket = new Rocket($engine, $mass, $fuelMass);
 
 	?>
 </body>
