@@ -13,13 +13,38 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "DemianforPHP/3. Условия и рекурсия.md",
+                "file": "DemianforPHP/10. Базы данных.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "a479d8c13b722f1d",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "DemianforPHP/11. Атрибуты.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "0bcc92d10e1a85ef",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "DemianforPHP/12. Генераторы.md",
                 "mode": "source",
                 "source": false
               }
             }
           }
-        ]
+        ],
+        "currentTab": 2
       }
     ],
     "direction": "vertical"
@@ -85,7 +110,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "DemianforPHP/3. Условия и рекурсия.md",
+                "file": "DemianforPHP/12. Генераторы.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -102,7 +127,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "DemianforPHP/3. Условия и рекурсия.md",
+                "file": "DemianforPHP/12. Генераторы.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -125,7 +150,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "DemianforPHP/3. Условия и рекурсия.md"
+                "file": "DemianforPHP/12. Генераторы.md"
               }
             }
           }
@@ -146,12 +171,16 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "02cd3ec03c436381",
+  "active": "0bcc92d10e1a85ef",
   "lastOpenFiles": [
+    "DemianforPHP/9. Fibers.md",
+    "DemianforPHP/12. Генераторы.md",
+    "DemianforPHP/11. Атрибуты.md",
+    "DemianforPHP/sandbox/foo.jpg",
+    "DemianforPHP/10. Базы данных.md",
+    "DemianforPHP/3. Условия и рекурсия.md",
     "DemianforPHP/1. Переменные и выражения.md",
     "DemianforPHP/Учебный план.md",
-    "DemianforPHP/10. Базы данных.md",
-    "DemianforPHP/9. Fibers.md",
     "DemianforPHP/6. Классы и основы ООП.md",
     "DemianforPHP/8. Позднее связывание.md",
     "DemianforPHP/5. Массивы.md",
