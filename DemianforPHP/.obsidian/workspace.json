@@ -121,7 +121,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "6. Классы и основы ООП.md",
+                "file": "12. Генераторы.md",
                 "mode": "source",
                 "source": false
               }
@@ -208,7 +208,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "6. Классы и основы ООП.md",
+                "file": "12. Генераторы.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -225,7 +225,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "6. Классы и основы ООП.md",
+                "file": "12. Генераторы.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -248,7 +248,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "6. Классы и основы ООП.md"
+                "file": "12. Генераторы.md"
               }
             }
           }
@@ -271,6 +271,9 @@
   },
   "active": "25da5c3fe55ebd97",
   "lastOpenFiles": [
+    "11. Атрибуты.md",
+    "12. Генераторы.md",
+    "6. Классы и основы ООП.md",
     "8. Позднее связывание.md",
     "10. Базы данных.md",
     "Учебный план.md",
@@ -278,7 +281,6 @@
     "1. Переменные и выражения.md",
     "9. Fibers.md",
     "7. Try Catch.md",
-    "6. Классы и основы ООП.md",
     "4. Итерации (Циклы).md",
     "5. Массивы.md",
     "3. Условия и рекурсия.md",
