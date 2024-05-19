@@ -126,9 +126,21 @@
                 "source": false
               }
             }
+          },
+          {
+            "id": "2d22fc6b7421daea",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "13. Перечисления.md",
+                "mode": "source",
+                "source": false
+              }
+            }
           }
         ],
-        "currentTab": 9
+        "currentTab": 10
       },
       {
         "id": "a472262ea2ae05b3",
@@ -208,7 +220,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "12. Генераторы.md",
+                "file": "13. Перечисления.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -225,7 +237,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "12. Генераторы.md",
+                "file": "13. Перечисления.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -248,7 +260,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "12. Генераторы.md"
+                "file": "13. Перечисления.md"
               }
             }
           }
@@ -269,17 +281,18 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "25da5c3fe55ebd97",
+  "active": "2d22fc6b7421daea",
   "lastOpenFiles": [
-    "11. Атрибуты.md",
+    "1. Переменные и выражения.md",
+    "13. Перечисления.md",
     "12. Генераторы.md",
+    "9. Fibers.md",
+    "11. Атрибуты.md",
     "6. Классы и основы ООП.md",
     "8. Позднее связывание.md",
     "10. Базы данных.md",
     "Учебный план.md",
     "2. Функции.md",
-    "1. Переменные и выражения.md",
-    "9. Fibers.md",
     "7. Try Catch.md",
     "4. Итерации (Циклы).md",
     "5. Массивы.md",

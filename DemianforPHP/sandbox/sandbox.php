@@ -1,34 +1,19 @@
 <?php
 
-function getNumbers()
-{
-    yield 1;
-    yield from [2, 3];
-    yield from fourfive();
-    yield from new ArrayIterator([6, 7]);
-    yield 8;
-    return yield from nineten();
-}
+$array = [1, 3, 22, 99, 6, 42, 0, 70];
 
-function fourfive()
-{
-    yield 4;
-    yield from five();
-}
+$getInfo = new Fiber(function () use ($array) {
+    foreach ($array as $item) {
+        if ($item == 42) {
+            Fiber::suspend();
+        } else {
+            echo $item . PHP_EOL;
+        }
+    }
+});
 
-function five()
-{
-    yield 5;
-}
+$getInfo->start();
 
-function nineten()
-{
-    yield 9;
-    return 10;
-}
+echo 'Resuming Fiber:' . PHP_EOL;
 
-$generator = getNumbers();
-foreach ($generator as $num) {
-    echo "$num "; // выдаст 1 2 3 4 5 6 7 8 9
-}
-echo $generator->getReturn(); // вернёт последний return 10;
+$getInfo->resume();
