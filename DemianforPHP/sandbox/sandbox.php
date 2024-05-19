@@ -1,22 +1,6 @@
 <?php
 
-trait Sandbox
+class Sandbox
 {
-    public function expressYourself()
-    {
-        return "I'm a card";
-    }
+    public int|float $age;
 }
-enum Suit
-{
-    use Sandbox;
-
-    case Hearts;
-    case Diamonds;
-    case Clubs;
-    case Spades;
-}
-
-$val = Suit::Hearts;
-
-echo $val->expressYourself();

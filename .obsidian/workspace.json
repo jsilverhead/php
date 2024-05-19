@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "DemianforPHP/13. Перечисления.md",
+                "file": "DemianforPHP/6. Классы и основы ООП.md",
                 "mode": "source",
                 "source": false
               }
@@ -85,7 +85,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "DemianforPHP/13. Перечисления.md",
+                "file": "DemianforPHP/6. Классы и основы ООП.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -102,7 +102,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "DemianforPHP/13. Перечисления.md",
+                "file": "DemianforPHP/6. Классы и основы ООП.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -125,7 +125,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "DemianforPHP/13. Перечисления.md"
+                "file": "DemianforPHP/6. Классы и основы ООП.md"
               }
             }
           }
@@ -148,6 +148,8 @@
   },
   "active": "0bcc92d10e1a85ef",
   "lastOpenFiles": [
+    "DemianforPHP/7. Try Catch.md",
+    "DemianforPHP/13. Перечисления.md",
     "DemianforPHP/12. Генераторы.md",
     "DemianforPHP/9. Fibers.md",
     "DemianforPHP/11. Атрибуты.md",
@@ -160,7 +162,6 @@
     "DemianforPHP/8. Позднее связывание.md",
     "DemianforPHP/5. Массивы.md",
     "DemianforPHP/4. Итерации (Циклы).md",
-    "DemianforPHP/7. Try Catch.md",
     "Project/Server/server.py",
     "Project/Server/index.html",
     "Project/Server/Dockerfile",
