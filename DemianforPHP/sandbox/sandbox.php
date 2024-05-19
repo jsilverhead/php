@@ -1,19 +1,22 @@
 <?php
 
-$array = [1, 3, 22, 99, 6, 42, 0, 70];
-
-$getInfo = new Fiber(function () use ($array) {
-    foreach ($array as $item) {
-        if ($item == 42) {
-            Fiber::suspend();
-        } else {
-            echo $item . PHP_EOL;
-        }
+trait Sandbox
+{
+    public function expressYourself()
+    {
+        return "I'm a card";
     }
-});
+}
+enum Suit
+{
+    use Sandbox;
 
-$getInfo->start();
+    case Hearts;
+    case Diamonds;
+    case Clubs;
+    case Spades;
+}
 
-echo 'Resuming Fiber:' . PHP_EOL;
+$val = Suit::Hearts;
 
-$getInfo->resume();
+echo $val->expressYourself();
