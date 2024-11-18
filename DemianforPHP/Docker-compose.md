@@ -46,6 +46,8 @@ FROM php:8.3-fpm-alpine3.19 //какой образ использовать
 
 COPY ./app/src ./src //из какой папки брать, в какую папку в образе всё записывать
 
+EXPOSE 80 // локальный порт, на котором всё будет работать
+
 WORKDIR var/www/html //рабочая директория в образе
 
 RUN //compiler, который выполняется 1 раз при создании образа
@@ -69,6 +71,20 @@ RUN rm /usr/bin/install-php-extensions
 ```
 
 `rm` = remove;
+
+Для запуска образа используем:
+`docker build -t <имя образа в нижнем регистре> <расположение Dockerfile>`
+
+`-t` - отвечает за title для создания образа с заголовком
+
+`docker run -p 8080:80 -d <имя образа>`
+
+`-p` - отвечает за port для запуска образа. 80 - локальный порт.
+
+`-d` - отвечает за запуск в фоновом режиме.
+
+----
+В docker-hub есть информация по настройке большинства стандартных образов.
 
 ----
 
@@ -98,6 +114,38 @@ docker-compose build
 ```
 docker-compose log
 ```
+----
+#### Настройка docker-compose.yml
+```d
+version: 3.1 // Версия контейнера, на данный момент считается не обязательным
+
+services:
+	db: 
+		container_name: имя контейнера
+		image: postgres:14-alpine
+		restart: always // Перезапускает контейнер, если возникли ошибки в образе.
+		environment: // Переменные, которые необходимо передать при запуске сервиса
+			POSTGRES_DB: <имя БД>
+			POSTGRES_PASSWORD: <Пароль для входа>
+			POSTGRES_INIT_DB: <Доп.паргументы>
+		ports:
+			- target: 5432
+			  published: 5432
+	php-fpm:  
+		container_name: ${COMPOSE_PROJECT_NAME}-php-fpm // имя контейнера
+		user: "1000:1000"  // пользователь в linux
+		build:  // подгружаем уже готовый dockerFile
+		    context: ./../  
+		    dockerfile: ./docker/php/fpm/Dockerfile  // ссылка на докер файл
+		volumes:  // прописываем тома (локальные данные)
+		  - type: bind  
+	      source: ./../app/  // папка, в которой происходят изменения
+	      target: /var/www/html/  // папка, куда грузятся изменения в контейнер
+		env_file: ./../app/.env.test // окружение
+```
+
+----
+В docker-hub есть настройки для docker-compose большинства сервисов.
 
 ----
 Порядок действий:
