@@ -88,6 +88,8 @@ RUN rm /usr/bin/install-php-extensions
 ```
 
 `rm` = remove;
+`cp` = copy;
+`mv` = move;
 
 Для запуска образа используем:
 `docker build -t <имя образа в нижнем регистре> <расположение Dockerfile>`
