@@ -610,3 +610,196 @@ public function about(): Response
 	//...
 }
 ```
+
+В `path` можно передать массив путей, соответствующим локалям.
+
+В международных приложениях добавлять ко всем роутам префикс локали:
+```yaml
+controllers:
+	resource: '../../Controller'
+	type: annotation
+	prefix:
+		en: '' # Default locale
+		nl: '/nl'
+```
+
+Также распространённое требование -  использовть другой хост, в зависимости от локали:
+```yaml
+contollers:
+	resource: '../../src/Controller'
+	type: attribute
+	host:
+		en: 'www.example.com'
+		nl: 'www.example.nl'
+```
+----
+### Маршруты без состояния
+Иногда, HTTP-ответ должен быть кеширован. Важно убедиться, что это может произойти.
+Однако, каждый раз когда начинается сессия во время запроса. Symfony превращает ответ в частный некешируемый.
+
+Чтобы объявить что сессия не должна быть использована при сопоставлении с запросом:
+```
+#Route[(path: '/', name: 'home_page', stateless: true)]
+```
+
+Если сессия используется. то  приложение сообщит о ней, основываясь на параметре `kernel.debug`:
+- `enabled` - вызовет исключение UnexpectedSessionUsageException
+- `disabled` - запишет лог предупреждения
+
+----
+### Генерирование URL
+Системы маршрутизации двусторонни:
+	1. Ассоциируют URL с контроллерами
+	2. Генерируют URL для заданного мршрута
+
+Генерирование URL позволяет не писать `<a href="...">` вручную в HTML-шаблонах.
+
+Чтобы сгенерировать URL нужно указать имя маршрута и значения параметров.
+
+Если контроллер расширяется от AbstractController, то можно использовать метод `generateUrl()`.
+
+```php
+#[Route(path: '/blog', name: 'blog_list')]
+public function list(): Response
+{
+	// URL без аргументов
+	$signupPage = $this->generateUrl('sign_up');
+
+	// URL с аргументами
+	$userProfilePage = $this->generateUrl('user_profile', ['username' => $user->getUserIdentidier()]);
+
+	// генерация абсолютного URL
+	$signupPage = $this->generateUrl('sigh_up', [], UrlGeneratorInterface::ABSOLUTE_URL)
+
+	// генерация URL с локалью
+	$signUpPageInDutch = $this->generateurl('sign_up', ['_locale' => 'nl'])
+}
+```
+
+`Абсолютный URL` -> `ABSOLUTE_URL` -> URL, который содержит полный путь, начиная от протокола http(s).
+
+`Относительный URL` -> `RELATIVE_PATH` -> содержит только часть пути и его интерпретация зависит от контекста.
+
+! При генерации URL нельзя передавать в параметры объект. Нужно привести их в строку.
+```php
+$url = $this->generateUrl('user_profile', ['id' => $user->id->toRfc4122()]);
+```
+----
+### Генерирование URL в сервисах
+Есть сервис `router` в Symfony, который использует метод `generate()`.
+При использовании автомонтирования сервисов, вам понадобится только добавить аргумент в конструктор сервис и типизировать его классом `UrlGeneratorInterface`.
+
+```php
+class SomeService
+{
+	public function __construct(
+		private UrlGeneratorInteface $router
+	) {}
+
+	public function someMethod(): void
+	{
+		//...
+		$signupPage = $this->router->generate('sign_up');
+		$userProfilePage = $this->router->generate('user_profile', [
+		'username' => $user->getUserIdentifier()]);
+
+		// ... И так далее
+	}
+}
+```
+----
+### Генерация URL в шаблонах:
+Тут что-то будет, но позже.
+
+----
+### Генерация URL в командах
+Работает также как и в сервисах. Исключение только что команды не выполняются в HTTP-контексте. Следовательно, генерация `ABSOLUTE_URL` - сформирует `http://localhost/` вместо реального URL.
+
+Решением будет сконфигурировать `default_url`, чтобы определить контекст запроса.
+```yaml
+# config/packages/routing.yaml
+framework:
+	router:
+		#...
+		default_uri: 'https://example.org/my/path'
+```
+
+Внутри комманды:
+```php
+class SomeCommand extends Command
+{
+	public function __construct(private UrlGeneratorInterface $router)
+	{
+	}
+
+	public function execute(InputInterface $input, OutputInterface $output): int
+	{
+		$signupPage = $this->router->generate('sign_up');
+
+		$userProfilePage = $this->router->generate('user_profile', ['user' => $user->getIdentifier()]);
+
+	// ... И так далее...
+	}
+}
+```
+----
+### Проверка существования роута
+```php
+try {
+$url = $this->router->generate($routeName, $params)
+} catch (RouteNotFoundException $e) {
+	// маршрут не определён...
+}
+```
+----
+### Форсирование HTTPS в сгенерированных URL
+Сгенерированные URL использует ту же схему, что и ткущий запрос.
+URL использую http по умолчанию.
+```yaml
+paramters:
+	router.request_context.scheme: 'https'
+	asset.request_context.secure: true
+```
+
+В контроллере:
+```php
+#[(Route(path: '/login', name: 'login', schemes: ['https']))]
+public function login(): Response
+{
+	// ...
+}
+```
+
+URL, сгенерированный для login всегда будет использовать HTTPS.
+
+----
+### Подписание URI
+`Подписанный URI` - URI, содержащий хэш-значение, которое зависит от содержания URI.
+
+URI - строка, которая однозначно идентифицирует ресурс. Он может указать на расположение ресурса, но это не обязательно.
+
+Пример URI: `urn:isbn:0-395-36341-1`
+
+URL - указывает на местоположение ресурса в сети.
+
+Можно проверить целостность подписанного URI, повторно вычислив его хэш-значение и сравнив его с хэшем, включенным в URI.
+
+В Symfony есть утилита для подписани URI: `UriSinger`, который можно использовать в сервисе или контроллере:
+```php
+class SomeService
+{
+	public function __construct(private UriSinger $uriSinger) {}
+
+	public function someMethod(): void
+	{
+		$url = 'https://example.com/foo/bar?sort=desc';
+		// добавляет параметр запроса под названием '_hash'
+		$signedUrl = $this->uriSinger->sign($url); 
+		// проверить подлинность URL
+		$urlSignatureIsValid = $this->uriSinger->check($signedUrl);
+		// если есть доступ к объекту request, то можно использовать следующий метод
+		$uriSignatureIsValid = $this->uriSinger->checkRequest($request);
+	}
+}
+```
+----
