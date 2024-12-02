@@ -213,3 +213,400 @@ bin/console debug:router app_lucky_number // Покажет информацию
 bin/console router:match /lucky/number/8
 ```
 
+----
+### Параметры Routes
+Есть роуты, где есть изменяемая переменная. Например slug или id. Переменные заключены в `{ }` типа `/blog/{slug}`
+
+В роуте можно передавать несколько параметров, но каждый из них можно использовать лишь единожды. Например:
+`{category}/blog/{page}`
+
+----
+### Валидация параметров
+Если иметь два одинаковых роута с разными параметрами, например `blog/{slug}` и `blog/{page}` - симфони откроет тот роут, который найдёт первым.
+Чтобы открыть конкретный необходимо использовать `requirements`:
+```php
+#[Route('path: 'blog{page}, name 'blog_list', requirements: ['page' => '\d+'])]
+```
+
+`\d` - регулярное выражение целого числа.
+
+`requirements` часто использует регулярные выражения для валидации.
+
+Требования можно внедрить в сам параметр:
+```php
+#[Route(path: 'blog/{page<\d+>}', name: 'blog_list')]
+```
+----
+### Необязательные параметры
+Если настроить роут формата `blog/{page}`, то переход по роуту `blog/` ниченр не сделает.
+Чтобы он соответствовал какому-то значению по умолчанию, это прописывается в методе:
+```php
+#[Route(path: 'blog/{page}', name: 'blog_list', requirements: ['page' => '\d+'])]
+public function list(int $page = 1): Response
+{
+	//...
+}
+```
+
+Если есть желание включить  какое-то значение по умолчанию в сгенерированном роуте, то нужно использовать `!` в имени параметра:
+`blog/{!page}`
+
+Значения по умолчанию также могут быть встроены в сам параметр:
+`{parameter_name?default_value}`
+
+Например:
+```php
+#[Routes(method: 'blog/{page<\d+>?1}', name: 'blog_list')]
+public function list(int $page): Response
+{
+	//...
+}
+```
+----
+### Параметры приоритетности
+Symfony оценивает роуты в том порядке, в котором они были определы.
+Можно установить параметр `priority` в атрибутах чтобы контролировать приоритеты.
+```php
+#[Routes(method: 'blog/list', name: 'blog_list', priority: 2)]
+public function list(): Response
+{
+	//...
+}
+```
+
+Значение по умолчанию, если не определено `0`.
+
+----
+### Конверсия параметров
+Распространённой потребностью маршрутизации является конверсия значения, хранящегося в некотором параметре, в другое значение.
+
+Для добавление конвертера параметров:
+```terminal
+composer require sensio/framework-extra-bundle
+```
+
+Работает вот так:
+```php
+#[Route(path: 'blog/{slug}', name: 'blog_show)]
+public function show(BlogPost $post): Response
+{
+	// $post - объект, чей слаг соответствует параметру маршрутизации
+
+	//...
+}
+```
+
+В случае такого роута, param converter проверит в БД наличие объекта с данным параметром.
+Если не найдёт, Symfony отдаст 404.
+
+----
+### Подкреплённые параметры исчисления
+В качество параметров маршрута можно использовать Enum, посколько Symfony автоматически преобразует их в скалярные значения.
+```php
+#[Route(path: 'orders/list/{status}', name: 'list_order_by_status')]
+public function list(OrderStatusEnum $status = OrderStatusEnum::paid): Response
+{
+	//...
+}
+```
+----
+### Специальные параметры:
+В дополнение кастомным параметрам, маршруты могут иметь любые следующие параметры, созданные Symfony:
+
+`_controller` - для определения того, какой контроллер и действие выполняется при совпадении маршрута.
+
+`_format` - совпавшее значение испольщуется для установки 'request format' объекта `Request`. Используется для таких вещей, как установка `Content-Type`.
+
+`_fragment` - для установки идентификатора фрагмента, что является последней необязательной частью url, которая начинается с символа `#` и используется для идентификации части документа.
+
+`_locale` - для установки локали в запросе.
+
+Пример:
+```php
+#[Route(
+	path: '/articles/{_locale}/search.{_format}',
+	locale: 'en'
+	format: 'html'
+	requirements: [
+		'_locale' => 'en|fr',
+		'_format' => 'html|xml'
+		],
+	)]
+	public function search():Response
+	{
+	}
+```
+----
+### Дополнительные параметры
+В опцию роута `defaults` можно определить параметры, не включённые в конфигурацию роута. Полезно для передачи доп.аргументов
+
+```php
+#[Route(path: 'blog/{page}', name: 'blog_index', defaults: ['page' => 1, 'title' => 'Hello world'])]
+publuc function inxed(int $page, string $title): Response
+{
+	//...
+}
+```
+
+----
+### Символы слеша в параметрах
+Параметры роута могут содержать любые символы кроме слеша `/`, для получения слеша, например в токене, можно изменить требования параметра.
+```php
+#[Route(path: 'share/{token}', name: 'share', requirements: ['token' => '.+'])]
+public function share($token): Response
+{
+	//...
+}
+```
+----
+### Псевдонимы роута
+Позволяет иметь несколько имён для одного роута.
+```yaml
+#config/routes.yaml
+
+nrew_route_name:
+	alias: original_route_name
+```
+----
+### Устаревание псевдонимов маршрута
+Если какой-то псевдоним больше не стоит использовать, можно оъявить его устаревшим:
+```yaml
+new_route_name:
+	alias: original_route_name
+	deprecated:
+		package: 'acme/package'
+		version: '1.2'
+```
+----
+### Группы и префиксы маршрутов
+Роуты могут иметь общие опции, потому в Symfony есть общая конфигурация.
+```php
+#[Route(path: '/blog', requirements: ['_locale => 'en|es|fr', name: 'blog'])]
+class BlogController extends AbstractController
+
+#[Route(path: '/{_locale}', name: 'index')]
+public function index(): Response
+{
+	//...
+}
+
+#[Route(path: '/{_locale}/posts/{slug}', name: 'show')]
+public function show(): Response
+{
+	//...
+}
+```
+
+Если маршрут с префиксом определяет пустой путь, то Symfony подставит в конце пути `\`. Чтобы этого не происходило, необходимо прописать `trailing_slash_on_root: false`:
+```yaml
+controllers:
+	resorce: '../../src/Controller/'
+	type: attribute
+	prefix: '/blog'
+	trailing_slash_on_roote: false
+	# ...
+```
+----
+### Получение имени и параметра маршрута
+Обычно Request в  Symfony хранит всю конфигурацию роута. Эту информацию можно получить через объект Request:
+```php
+#[Route(path: '/blog', name: 'blog_list')]
+public function list(Request $request): Response
+{
+	$routeName = $request->attributes->get('_route');
+	$routeParameters = $request->attributes->get('_route_params');
+
+	// Получит все доступные атрибуты:
+	$allAttributes = $request->attributes->all();
+}
+```
+----
+### Как это делается у нас
+У нас Request превращается в Payload (данные +  headers) путётм:
+1. Получения данных, в зависимости от запроса GET/POST
+2. Если запрос не соответствует GET/POST, тогда выйдет ошибка
+3. Получение Headers из Request, разделение строки авторизации на слова: Bearer и сам токен.
+4. Если токена врнутри нет, то accessToken = null.
+
+Получение данных:
+```php
+public function getData(Request $request): Payload
+{
+	$data = match($request->getMethod()) {
+		RequestEnum:POST => $this->deserializeRequest($request),
+		RequestEnum:GET => $request->query->getAll(), // Получает данные из query
+		default: throw new MethodIsNotAllowedException(allowed: [RequestEnum:POST, RequestEnum:GET]);
+	}
+}
+
+public function deserializeRequest(Request $request): array
+{
+	$payload = $request->getContent(); // Получает данные из request
+
+	if ('' = $payload) {
+		return [];
+	}
+	
+	try {
+		$data = json_decode(payload: $payload, associative: true, flags: \JSON_THROW_ON_ERROR);
+	} catch(JsonException) {
+		throw new UnparsableRequestExcetpion();
+	}
+
+	if (\is_array($data)) {
+		throw new UnparsableRequestExcetpion();
+	}
+
+	return $data;
+}
+
+public function getHeaders(Request $request): Header
+{
+	$authorization = $request->headers->get('Authorization'); // позволит получить хэдеры из реквеста
+
+	if (null === $authorization) {
+		return new Header(accessToken: null);
+	}
+
+	$split = exploder(' ', $authorization);
+
+	if(2 !== count($split) || 'Bearer' !== $split[0] || '' === $split[1]) {
+		throw new InvalidAuthorizationHeaderException();
+	}
+
+	return new Header(accessToken: split[1]);
+}
+```
+
+У нас есть PayloadResolver, который является кастомным резолвером ValueResolverInteface.
+
+В системе есть встроенные резолверы, также можно ставить и свои
+
+Интефрейс определяет что делать с Request при вызове контроллера, подбирая резолверы, с учётом приоритезации.
+
+У нас приоритет Payload Resolver отдаётся 2. 1 место у резолверов AdminResolver и UserResolver.
+
+----
+### Argument MetaData
+
+Когда мы создаётм метод контроллера в формате `public function __invoke(User $user, Payload $payload)` - симфони определяет необходимую сигнатуру контроллера. Нужен резолвер, который даст информацию о метаданных и сформирует их в объект. Тип объекта определяется в ArgumentMetadata type.
+
+```php
+public function resolve(Request $request, ArgumentMetaData $metadata): iterable
+{
+	if (Admin::class !== $metadata->getType) {
+		return [];
+	}
+
+	$admin = $this->security->getUser();
+
+	if (!$admin instanceOf Admin) {
+		throw new AccessIsDeniedException();
+	}
+
+	$failedPermissions = array_filter(
+		$arguments->getAttributesOfType(AllowedPermission::class), static fn(AllowedPermission $allowedPermission): bool => null === $admin->role || false === $admin->role->can($allowedPermission->permissions),
+	);
+
+	if (count($failedPermissions) > 0) {
+		throw new AccesIsDeniedException();
+	}
+
+	return [$admin];
+}
+```
+
+Обычно отправляется вместе с запросом в формате какого-нибудь токена.
+
+----
+### Специальные маршруты
+Можно создавать специальные роуты, которые редиректят на другие роуты. Зачем? А хрен его знает)
+Например `RedirectController`:
+```yaml
+doc_shortcut:
+	path: /doc
+	controller: Symfony\Bundle\FrameworkBudle\Controller\RedirectController
+	defaults:
+		route: 'doc_page'
+		page: 'index'
+		version: 'current'
+		permanent: true
+		keepQueryParams: true
+		keepRequestmethod: true
+		ignoreAttributes: true
+
+leagcy_doc:
+	path: /legacy/doc
+	controller: Symfony\Bundle\FrameworkBundle\RedirectController
+	defaults:
+		path: 'https://legacy.example.com/doc'
+		permanent: true
+```
+
+Symfony также предоставляет утилиты для перенаправления внутри контроллеров.
+##### Перенаправление URL с замыкающими слешами:
+Исторически URL следлвали соглашению UNIX о добавлении замыкающих слешей для каталогов (`https://www.example.com/foo/`) и их удаления для ссылания на файлы (`https://www.example.com/foo/bar`).
+
+Symfony следует этой логике для перенаправления между URL с и без замыкающего слеша (но только для запросов `GET` и `HEAD`).
+
+|Тут должна была быть таблица, но там хуйня какая-то с кодировкой походу|
+
+----
+### Маршрутизация подкаталогов
+Роут может конфигурировать опцию `host`, чтобы требовать, чтобы HTTP-хост запросов совпадал с конкретным значением и отзываться на конкретный роут в зависимости от хоста:
+```php
+#[Route(path: '/', name: 'mobile_homepage', host: 'm.example.com')]
+public function mobileHomepage(): Response
+{
+	//...
+}
+#[Route(path: '/', name: 'homepage')]
+public function homepage(): Response
+{
+	//...
+}
+```
+
+Значение опции `host` может иметь параметры и эти параметры могут быть тоже валидированы с помощью requirements:
+```php
+#[Route(path: '/', name: 'mobile_homepage', host: '{subdomain}.example.com', defaults: ['subdomain' => 'm'], requirements: ['subdomain' => 'm|mobile'])]
+public function mobileHomepage(): Response
+{
+	//...
+}
+
+#[Route(path: '/', name: 'homepage')]
+public function homepage(): Response
+{
+	//...
+}
+```
+
+При использовании маршрутизации субкаталогов, нужно устанавливать HTTP-заголовки `host` в функциональных тестах, иначе маршруты не будут совпадать.
+```php
+$crawler = $client->request
+('GET',
+ '/',
+  [],
+  [], 
+  ['HTTP_HOST' => 'm.example.com']
+  // или получить значение из какого-то параметра контейнера
+  // ['HTTP_HOST' => 'm' . $client->getContainer()->getParameter('dmomain')]
+  );
+```
+
+----
+### Локализованные маршруты
+Если приложение переводится на несколько языков, каждый маршрут может определять другой URL по каждой локали перевода.
+
+```php
+#[Route(path: [
+	'en' => '/about-us',
+	'nl' => '/over-ons'
+	], name: 'about_us'
+])]
+public function about(): Response
+{
+	//...
+}
+```
