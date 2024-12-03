@@ -1137,4 +1137,171 @@ $response = new Response('Hello'.$name, Response::HTTP_OK);
 $response = new Response('<style> ... </style>');
 $response->headers->set('Content-Type', 'text/css');
 ```
+----
+#### Доступ к значениям конфигурации
+Чтобы получить значение любого параметра конфигурации из контроллера, используйте метода-помощник `getParameter()`:
+```php
+$contents = $this->getParameter('kernel.project_dir')./'contents';
+```
 
+`getParameter()` предоставляет доступ к параметрам окружения, доступ к настройкам БД, доступ к путям.
+
+Работает только внутри контейнера.
+
+----
+#### Возвращение JSON ответа
+Если нужно вернуть JSON из контроллера, то нужно указать вовзрвщаемый тип JsonResponse и использовать метод-помощник `json()`.
+```php
+public function __invoke(Request $reuqest): JsonResponse
+{
+	// также устанавливает нужный content-type
+	retrun $this->json(['username' => 'jane.doe']);
+
+	// определяет три опциональных аргумента
+	return $this->json($data, $headers = [], $context = []);
+}
+```
+
+Если подключён сервис сериализации - она будет возвращать данные json. В противном случае придётся использовать метод `json_encode`.
+
+----
+#### Потоковые ответы файлов
+Можем использовать метод-помощник `file()`, чтобы обслуживать файл внутри контроллера.
+```php
+public function download(): BinaryFileResponse
+{
+	return $this->file('/path/to/some_file.pdf');
+}
+```
+
+У `file()` есть аргументы для конфигурации поведения:
+```php
+public function download(): BinaryFileResponse
+{
+	$file = new File('/path/to/some_file.pdf');
+
+	// можно переименовать файл
+	return $this->file($file, 'new_name.pdf');
+
+	// открывает файл в браузере вместо того чтобы скачивать его
+	return $this->file('invoice_3241.pdf', 'my_invoice.pdf', ResponseHeaderBag::DISPOSITION_INLINE);
+}
+```
+----
+#### Отправка ранних подсказок
+Ранние подсказки указывают браузеру на необходимость начать загрузку некоторых ресурсов ещё до того, как приложение отправляет содержание ответа.
+Повышает производительность, потому что браузер может предварительно получать ресурсы, которые потребуются для отправки полного ответа.
+
+Ранние подсказки можно отправлять с помощью `sendEarlyHints()`:
+```php
+#[Route(path: '/', name: 'main_page')]
+public function __invoke(Request $request): Response
+{
+	$response = $this->sendEarlyHints([
+	new Link(rel: 'preconnect', href: 'https://fonts.gogle.com'),
+	new Link(href: 'style.css')->withAttribute('as', 'stylesheet'),
+	new Link(href: '/script.js')->withAttribute('as', 'script'),
+	]);
+
+	// подготовить содержание ответа
+	return $this->render('homepage/index.html.twig', response: $response);
+}
+```
+
+Технические - ранние подсказки это информационный HTTP-ответ со статус-кодом 103. Метод `sendEarlyHints()` также возвращает объект `Response` с этим статус-кодом и немедленно отправляет его заголовки.
+
+Таки образом браузер может заранее начать загрузку ресурсов.
+
+----
+## Расширение разрешения аргумента действия
+ArgumentResolver распознаёт Request. Можно расширить функциональность работы с аргументами через ValueResolverInterface, создав на основе его класс resolver.
+
+В Kernel есть следующие функциональности:
+- `RequestAttributeValueResolver` - пытается найти атрибут запрос, совпадающий с именем аргумента
+- `RequestValueResolver` - внедряет текущий Request при типизации Request, или классе, расширяющем Request
+- `ServiceValueResolver` - внедряет сервис при типизации валидным классом сервиса или интерфейсом. Работает как автомонтирование.
+- `SessionValueResolver` - внедняет сконфигурированный класс сессии расширяющий SessionInterface при типизации SessionInterface или классом, расширяющим SessionInterface
+- `DefaultValueResolver` - при наличии, установить значение аргумента по умолчанию, если аргумент необязательный
+- `VariadicValueResolver` - верифицирует является ли данные запроса массивом. И добавит их в список аргументов. Последний аргумент будет содержать все значения этого массива.
+----
+# Конфигурация Symfony
+Приложение настраивается с помощью файлов конфига в папке /config:
+- `routes.yaml `- определяет конфиругацию маршрутизации
+- `services.yaml` - настраивает службы контейнера служб
+- `bundles.php` - включает/отключает пакет в вашем приложении
+
+В папке config/packages - хранятся конфигурация каждого пакета, установленного в вашем приложении
+
+Пакеты - добавляют готовые к использованию функции в проект.
+
+При использовании `Symfony Flex` данные в bundles и config/packages обновляются во время установки пакета.
+
+----
+### Форматы и конфигурации
+Symfony позволяет выбирать формат конфигурации из yaml, xml, php.
+
+- YAML -  Не для всех IDE, простой и понятный
+- XML - Излишне многословная конфигурация, но подходит почти для всех IDE
+- PHP - позволяет создать динамическую конфигурацию с помозью массивов или ConfigBuilder
+----
+#### Импорт файлов конфигурации
+Symfony загружает файлы конфигурации с помощью компонента Config, который предоставляет расширенные функции, такие как импорт других файлов конфигурации, даже если он использует другой формат:
+```php
+return static function (ContainerConfigurator $container): void {
+	$container->import('legacy_config.php');
+
+	// можно импортировать несколько файлов из папки
+	$container->import('/etc/myapp/*.yaml');
+
+	// третий аргумент говорит о игнорировании ошибок 'ignore_errors'
+	// not-found молча отбрасывает ошибки, если файл не был найден
+	$container->import('my_config_file.php', null, 'not_found');
+
+	// true молча отбрасывает все ошибки, включая неверный код и 'not found'
+	$containder->import('my_config_file.php', null, true);
+}
+```
+----
+#### Параметры конфигурации
+Иногда одно и тоже значение конфигурации используется в нескольких файлах конфигурации.
+Вместо того чтобы повторять его, его можно определить как `параметр`, что похоже на повторно используемое значение конфигурации.
+`parameters` ключ определяет параметры в конфиге services.
+```php
+#services.php
+return static function (ContainerConfigurator $container):void {
+	$container->parameters()->set('app.admin_mail', 'something@example.com')
+
+	->set('app.enable_v2_protocol', true)
+
+	->set('app.supported_locales', ['en', 'es', 'fr'])
+
+	->set('app.some_parameters', 'This is a bell char: \x07')
+
+	->set('app.some_constant', GLOBAL_CONSTANT)
+
+	->set('app.another_constant', BlogPost::MAX_ITEMS)
+
+	->set('app.some_enum', PostState::Published);
+};
+```
+
+После определения этих параметров на них можно ссылаться из любого другого файла:
+```php
+#some_package.php
+return static function (Container Configuration $container):void {
+	$container->extension('some_package', [
+	// такой вариант
+	'email_address' => param('app.admin_email'), 
+	// или такой, и symfony найдёт параметр и заменит
+	'email_address' => '%app.admin_email%'])
+};
+```
+
+Если в значении какого-либо параметра есть `%` - тогда эту строку нужно экранировать другим `%`, чтобы synfony не считал его ссылкой на имя параметра.
+```php
+return static function (ContainerConfigurator $container):void
+{
+
+
+}
+```
