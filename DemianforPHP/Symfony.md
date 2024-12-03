@@ -802,4 +802,339 @@ class SomeService
 	}
 }
 ```
+Отличная практика - добавлять к подписи ограниченное время жизни.
+```php
+$url = 'https://example.com/foo/bar?sort=desc';
+
+// Дата окончания подписи
+$signedUrl = $this->uriSigner->sign($url, new DateTimeImmutable('2025-01-01'));
+
+// Можно дать интервал для указания жизни подписи
+$signedUrl = $this->uriSinger->sign($url, new DateTimeInterval('PT10S'));
+
+// Или передать временную метку в секундах
+$signedUrl = $this->uriSinger->sign($url, 4070908800);
+```
 ----
+# Контроллер
+Контроллер - созданная php функция, которая смотрит на объект Request, создаёт и возвращает объект Response.
+Ответ может быть JSON, XML,  HTML-страницей, файлом, редиректом, ошибкой 404 и так далее)
+
+----
+### Простой контроллер
+```php
+class Controller
+{
+
+#[Route(path: '/', name: 'main_page')]
+public function __invoke(Request $request): Response
+{
+	return new Response('<html><body><h1>Page</h1></body></html>');
+}
+}
+```
+
+ivnoke в данном случае представляет Controller
+
+Атрибут `#[Route(path: '/')]` - добавляет роут для класса (метода).
+
+----
+### Базовый класс контроллера и сервисы
+В Symfony есть `AbstractController`, его можно использовать для получения доступа к дополнительным методам-помощникам.
+
+----
+#### Перенаправление
+Перенаправить пользователя на другую страницу, используя методы:
+```php
+public function __invoke(): RedirectResponse
+{
+	return $this->redirectToRoute('homepage');
+
+	return $this->redirectToRoute('homepage', [], 301);
+
+	// перенаправление по пути с параметрами
+	return $this->redirectToRoute('app_lucky_number', ['max' => 10]);
+
+	// перенаправление с сохранением изначальных параметров запроса
+	return $this->redirectToRoute('blog_show', $request->query->all());
+
+	// перенаправляет на внешний сайт, НЕ ПРОВЕРЯЕТ МЕСТО НАЗНАЧЕНИЯ
+	return $this->redirect('http://symfony.com/doc');
+}
+```
+----
+#### Отображение шаблонов
+Метод `render()` отображает twig шаблон и помещает его в содержимое в Response.
+```php
+return $this->render('lucky/number.html.twig', ['number' => $number])
+```
+----
+### Получение сервисов
+В Symfony есть куча полезных объектов-сервисов для облегчения работы: шаблонищатор, отправка почты, запрос к БД и др.
+```php
+#[Route(path: '/', name: 'main_page')]
+public function main(int $max, LoggerInterface $logger): Response
+{
+	$logger->info('Logging!');
+}
+```
+
+! Вот тут странно, ведь сервисы лучше прокидывать через конструктор.
+
+Чтобы узнать какие сервисы есть в Symfony:
+```terminal
+bin/console debug:autowiring
+```
+
+Если нужен контроль над точным значение аргумента, можно использовать `#[Autowire]`:
+```php
+public function number(int $max, #[Autowire(service: 'monolog.logger.request')] LoggerInterface $logger, #[Autowire('%kernel.project.dir%')] string $projectDir): Response
+{
+	//...
+}
+```
+
+`#[Autowire]` - используется для получение (injection) данных об аргументе из контейнера. Используется в конструкторах, сеттерах и других методах, где требуется автоматические внедрение зависимостей.
+
+Можно указать какой сервис мы используем, или оставить как есть и symfony сможет найти необходимый сервис.
+
+----
+### Генерирование контроллеров
+Можно использовать Symfony Maker (необходимо устаноить), чтобы быстро генерировать контроллеры.
+```terminal
+bin/console make:controller BrandnewController
+```
+Можно сделать crud:
+```
+bin/console make:crud Product // Product - entity
+```
+----
+Управление ошибками и страницами 404
+```php
+public function index(): Response
+{
+	$product = $this->EntityRepository->find();
+	
+	if (!$product) {
+	throw $this->createNotFoundException("Product doesn't exist.");
+	}
+
+	//...
+}
+```
+
+`createNotFoundException()` - сокращение для создания `NotFoundException()`, который вызовет 404 внутри Symfony.
+
+```php
+// Сгенерирует ошибку с кодом 500
+throw new Exception();
+```
+----
+### Объект запроса в качестве аргумента контроллера
+В случае, если нам нужно получить как-то данные из запроса, например заголовок запроса или получить данные к файлу - всё то хранится в `Request` запроса.
+
+Просто добавляем Request в качестве аргумента к контроллеру.
+```php
+#[Route(path: '/', name: 'main_page')]
+public function __invoke(Request $request): Response
+{
+	$page = $request->query->get('page', 1);
+	
+	//...
+}
+```
+----
+### Автоматическое сопоставление запроса
+Можно автоматические сопоставить полезную нагрузку запроса и/или параметры запроса с аргументами действий контроллера с помощью атрибутов.
+
+!Шо бля?
+
+----
+#### Индивидуальное сопоставление параметров запроса
+Представь, что пользователь дёргает роут по ссылке: https://example.com/dashboard?firstName=John&lastName=Smith&age=27
+Можно достать параметры из квери, путём `MapQueryParameter`:
+```php
+public function __invoke(
+#[MapQueryParameter] string $firstName,
+#[MapQueryParameter] string $lastName,
+#[MapQueryParameter] int $age,
+): Response
+{
+	//...
+}
+```
+
+`MapQueryParameter` может принимать необязательный аргумент под названием `filter`. Можно валидировать фильтр путётм константы `Validate Filters`:
+```php
+public function __invoke(
+#[MapQueryParameter(filter: \FILTER_VALIDATE_REGEXP, options: ['regexp' => '/^\w+$/'])] string $firstName,
+#[MapQueryParameter] string $lastName,
+#[MapQueryParameter(filter: \FILTER_VALIDATE_INT)] int $age
+): Response
+{
+	///...
+}
+```
+----
+#### Сопоставление всей строки запроса
+Можно отобразить всю строку запроса в объект DTO для валидации:
+```php
+class UserDto
+{
+public function __construct(
+#[Assert\NotBlank]
+public string $firstName,
+
+#[Assert\NotBlank]
+public string $lastName,
+
+#[Assert\GreaterThan(18)]
+public int $age,
+) {}
+}
+```
+
+И в контроллере можно использовать `MapQueryString`:
+```php
+public function __invoke(
+#[MapQueryString]
+UserDto $user
+): Response
+{
+	//...
+}
+```
+
+Можно настроить группы валидации и HTTP-статус при неудачной валидации:
+```php
+
+public function __invoke(
+#[MapQueryString(
+validationGroups: ['strict', 'edit'],
+validationFailedStatusCode: Response::HTTP_UNPROCESSABLE_ENTITY
+)] UserDto $userDto
+)
+```
+
+Код по умолчанию при неудачной проверке - 404
+
+----
+`MapQueryString` - Берёт строку запроса целиком и формирует её в массив.
+
+Если строка запроса name=John&age=30&city=New%20York,  то MapQueryString создаст массив ['name' => 'John', 'age' => '30', 'city' => 'New York'].
+
+`MapQueryParameter` - Берёт параметры запрос по-отдельности.
+
+----
+#### Сопоставление полезной нагрузки запроса (Payload)
+В запросы типа PUT и POST данные попадают не через query, а через Payload (полезная нагрузка) в виде json:
+```json
+{
+"firstName": "John",
+"lastName": "Smith",
+"age": 29
+}
+```
+
+Для этого можно использовать `MapRequestPayload`:
+```php
+public function __invoke(
+#[MapRequestPayload]
+UserDto $userDto
+): Response
+{
+	//...
+}
+```
+
+Можно настроить контекст сериализации:
+```php
+public function __invoke(
+#[MapRequestPayload(
+serializationContext: ['...'], resolver: AppResolverUserDtoResolver
+)] UserDto $userDto
+)
+{
+	//...
+}
+```
+
+Также для Payload можно настроить группы валидации статус-код ошибки при неверной валидации:
+```php
+public function __invoke(
+#[MapRequestPayload(
+acceptFormat: 'json',
+validationGroups: ['strict', 'read'],
+validationFailedStatusCode: Response::HTTP_NOT_FOUND
+)] UserDto $userDto
+): Response
+{
+	//...
+}
+```
+----
+### Управление сессией
+В сессии пользователя можно хранить специальные сообщения, так называемые flash-сообщения. По совсему дизайны эти сообщения предназначены для однократного использования:
+Они исчезают из сессии автоматически как только их извлекают.
+Потому flash-сообщения удобны для хранения пользовательских уведомлений.
+
+Например при обработки отправки формы:
+```php
+public function submit(Request $request):Response
+{
+	if ($form->isSubmitted() && $form->isValid) {
+		//обработка формы
+
+		$this->addFlash('notice', 'Your form submited');
+		// эквивалентно $request->getSession()->getFlashBag()->add()
+
+		return $this->redirectToRoute(/* ... */);
+	}
+
+	return $this->render(/* ... */);
+}
+```
+
+`FlashBag` - часть сессии Symfony, которая хранит временные сообщения, которые отображаются лишь раз после перенаправления.
+
+`'notice'` - ключ или имя для сообщения. Используется для идентификации типа сообщения.
+
+! Походу используется для twig шаблонов, чтобы давать обратную связь на действия пользователя.
+
+----
+### Объект Request и Response
+Symfony будет отдавать `Request` любому аргументу контроллера, где он указан.
+```php
+public function index(Request $request): Response
+{
+	$request->isXmlHttpRequest(); // является ли request ajax-овским
+	$request->getPreferedLanguage(['en', 'fr']);
+
+	$request->query->get('page'); // извлекает данные из query
+	$request->request->get('page'); // излвлекает данные из payload
+
+	$request->server->get('HTTP_HOST'); //извлекает переменные SERVE
+
+	$request->files->get('foo'); // извлекает UploadedFile
+
+	$request->cookie->get('PHPSESSID'); // извлекает значение cookie
+
+	$request->headers->get('host'); // чтение заголовка запроса
+}
+```
+
+Класс Request имеет много встроенных свойств и методов, которые возвращают необходимую информацию при запросе.
+
+`Response` тоже имеет публичное свойство `headers`. Этот объект имеет тип ResponseHeaderBag - предоставляет методы для получение и установки заголовка ответа. Имена заголовков нормализированы.
+Имя `Content-Type` эквивалентно `content-type` или `content_type`.
+
+В Symfony контроллер должен возвращать Response.
+```php
+// простой респонс
+$response = new Response('Hello'.$name, Response::HTTP_OK);
+
+//респонс с заголовком и статус кодом 200
+$response = new Response('<style> ... </style>');
+$response->headers->set('Content-Type', 'text/css');
+```
+
