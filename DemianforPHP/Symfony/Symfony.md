@@ -1111,7 +1111,9 @@ public function index(Request $request): Response
 	$request->getPreferedLanguage(['en', 'fr']);
 
 	$request->query->get('page'); // извлекает данные из query
-	$request->request->get('page'); // излвлекает данные из payload
+	$request->get->get('page'); // излвлекает данные из payload
+
+	// ВООБЩЕ <!> тут работает следующая конструкция: $reqeust->getPayload()->get('page');
 
 	$request->server->get('HTTP_HOST'); //извлекает переменные SERVE
 
@@ -1520,3 +1522,160 @@ composer dump-env prod
 services:
 	Symfony\Component\Dotenv\Command\DotenvDumpCommand: ~
 ```
+А затем выполнить команду:
+```terminal
+APP_ENV=prod APP_DEBUG=0 php bin/console dotenv:dump
+```
+После выполнения этой команды Symfony загрузки `.env.local.php` файл, чтобы получить переменные окружения и не будет тратить время на анализ .env файлов.
+
+----
+#### Хранение переменных окружения в других файлах
+По-умолчанию все переменные среды хранятся в .env файле, но можно хранить их в других файлах.
+
+Если использовать компонент `Runtime`, путь dotenv является частью параметров, которые вы можете задать в своём `composer.json` файле:
+```json
+{
+"extra": {
+	"runtime": {
+		"dotenv_path": "my/custom/path/to/.env"
+		}
+	}
+}
+```
+
+В качестве альтернативного варианта можете напрямую вызвать `Dotenv` класс в своём `bootstrap.php` файле или любом другом файле приложения:
+```php
+(new Dotenv())->bootEnv(dirname(__DIR__).'my/custom/path/to/.env')
+```
+
+Symfony будет искать переменные окружения в этом файле, а такэе в локальных и специфичных для окружения файлах (например `.*.local`, `.*.<environment>.local`).
+
+Чтобы узнать путь к .env файлам, используй SYMFONY_DOTENV_PATH
+
+----
+#### Шифрование переменных - СЕКРЕТКИ
+Вместо определения реальной переменной среды или добавления её в .env фале, если значение переменной является конфидециальным, то можно зашифровать значения с помощью системы управления секретами.
+
+<!> ТУТ ЗАПОЛНИ ДАННЫЕ ИЗ https://symfony.com/doc/current/configuration/secrets.html
+##### Список переменных окружения
+Через команду `debug:dotenv` можно узнать как Symfony анализирует .env файлы.
+
+----
+#### Создание собственной логики для загрузки переменных окружения
+Можно реализовать собственную логику для загрузки переменных окружения, если поведение Symfony по умолчанию не соответствуют вашим потребностям.
+Для этого создайте службу, класс которой реализует `EnvVarLoaderInterface`.
+
+[x] если использую конфигурацию services.yaml по умолчанию, функция автоконфигурации включит и пометит эту службу. В противном случе её нужно зарегистрировать вручную тегом `container.env_var_loader`.
+
+К примеру, у меня есть вот такой файл с переменными окружения:
+```json
+#env.json
+{
+	"vars": {
+		"APP_ENV": "prod",
+		"APP_DEBUG": false
+	}
+}
+```
+Можно определить класс `JsonEnvVarLoader` для заполнения переменных среды из файла:
+```php
+final class JsonEnvVarLoader implements EnvVarLoaderInterface
+{
+private const ENV_VARS_FILE = 'env.json';
+
+	public function loadEnvVars(): array
+	{
+		$filename = __DIR__.\DIRECTORY_SEPARATOR.self::ENV_VARS_FILE;
+		if (!is_file($filename_)) {
+			throw new Exception('No file found');
+		}
+
+		$content = json_encode(file_get_contents($filename), true);
+
+		return $content['vars'];
+	}
+}
+```
+
+`DIRECTORY_SEPARATOR` - константа, которая означает `/` или `\` в зависимости от OS.
+
+<!> Чтобы переменная env имела значение в определённом окружении, но использовал загрузчики в другой среде, нужно присовить пустое значение переменной env для среды, в которой хочется использовать загрузчики:
+```env
+# .evn
+APP_ENV=prod
+
+#.env.prod - пойдёт искать в другом окружении
+APP_ENV=
+```
+
+----
+#### Доступ к параметрам конфигурации
+Контроллеры и службы могут получить доступ ко всем параметрам конфигурации. Это включает как определённые вручную параметры, так и параметры, созданные пакетами.
+
+Чтобы увидеть все параметры, которые существуют  приложении:
+```terminal
+php bin/console debug:container --parameters
+```
+
+В контроллерах для получения параметра используй `getParameter()`:
+```php
+public function index(): Response
+{
+	$projectDir = $this->getParameter('kernel.project_dir');
+	$adminEmail = $this->getParameter('app.admin_email');
+
+	//...
+}
+```
+
+В службах и контроллерах, которые не расширяются от AbstractController, вводите параметры как аргументы их конструкторов, потому что autowire для этих служб не работает.
+```php
+#services.php
+return static function(ContainerConfigurator $container):void {
+	$container->parameters()->set('app.contents_dir', '...');
+	$container->services()->get(MessageGenerator::class)->arg('$contentsDir', '%app.contents_dir%');
+}
+```
+
+Если я вывожу один и тот же параметр снова и снова, то можно использовать `services._defaults.bind`. Аргументы в этой опции вводятся автоматически каждый раз когда конструктор службы или действие контроллера определяется аргументом с этим именем.
+Например:
+```php
+return static function(ContainerConfigurator $container):void {
+	$container->services()->defaults()->bind('$projectDir', '%kernel.project_dir%')
+}
+```
+
+Если какой-то службе нужен доступ к большому количеству параметров, то чтобы их не внедрять по-отдельности, можно внедрить все параметры одновременно с помощью `ContainerBagInterface`:
+```php
+class MessageGenerator
+{
+	public function __construct(private ContainerBagInterface $params) 
+	{}
+
+	public function generate():void
+	{
+		$sender = $this->params->get('mailer_sender');
+	}
+}
+```
+----
+#### Использование PHP ConfigBuilders
+Если сложно фигачить большие конфиги, то используй `ConfigBulders`.
+```php
+#security.php
+return static function(SecurityConfig $security):void
+{
+	$security->firewall('main')->pattern('^/*')->lazy(true)->security(false);
+
+	$security
+	->roleHierarchy('ROLE_ADMIN', ['ROLE_USER']) // админ наследует права пользователя
+	->roleHierarchy('ROLE_SUPER_ADMIN', ['ROLE_ADMIN', 'ROLE_ALLOWED_TOSWTICH']) // суперадмин наследует права админа и возможность смены роли
+	->accessControl()->path('^/user')->roles('ROLE_USER'); // к пути user есть доступ только у роли юзер
+
+	$security->accessControl(['path' => '^/admin', 'roles' => 'ROLE_ADMIN']); // к пути admin есть доступ только к роли админ
+};
+```
+
+[x] Только корневые классы в пространстве имен `Symfony/config` являются ConfigBuilders. Вложенные конфигурации являются обычными объектами PHP, которые не автоматически связываются при использовании их в качестве типа аргумента.
+
+[x] Чтобы включить автодополнение ConfigBuilders в IDE, нужн убедиться что не исключён каталог `var/cache/dev/Symfony/Config/`.
