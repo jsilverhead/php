@@ -219,3 +219,101 @@ $products = $this->repository->findAll();
 ```
 
 Можно также добавить кастомные методы для сложных запросов. У нас мы вообще репозитории пишем вручную).
+
+----
+### Автоматическое извлечение объектов (EntityValueResolver)
+Можно установить `EntityValueResolver` для автоматического выполнения запроса.
+Где можно упростить запись до:
+```php
+class GetProductController extends AbstractController
+{
+	#[Route(path:'/get/product/{id}', name: 'get_product', methods: ['GET'])]
+	public function show(Product $product) {
+		//...
+	}
+}
+```
+
+<!> Можно отключить EntityValueResolver в `MapEntity`:
+```php
+public function show(
+#[CurrentUser] 
+#[MapEntity(disabled:true)])
+User $user): Response
+	{
+	//...
+	}
+```
+----
+#### Извлекать автоматически
+Если поля роута совпадают со свойствами сущности, то объекты извлекутся автоматически:
+```php
+// Найдёт по ID - Primary Key
+#[Route(path:'/get/product/{id}')]
+public function __invoke(Product $product): Response
+{}
+
+// Найдёт через findBy
+#[Route(path:'/get/product/{slug}')]
+public function __invoke(Product $product): Response
+{}
+```
+
+Автоматическое извлечение работает в следующих ситуациях:
+- Если есть {id} в методе.
+- Если совпадают свойства объекта ({slug})
+
+Такое поведение включено по умолчанию на всех контроллерах. Эту функцию можно ограничить. Нужно установить параметр `doctine.orm.controller_resolver.auto_mapping` на `false`;
+
+Если параметр отключён, его можно включить в частных случаях путём:
+```php
+#[Route(
+path:'/get/product/{slug}'
+name: 'get_product'
+)]
+public function show(
+#[MapEntity](mapping: ['slug' => 'slug'])
+Product $product
+): Response
+{
+	//...
+}
+```
+----
+#### Извлечение через выражение
+Можно через expression language написать извлечение:
+```php
+#[Route(path:'posts/{product_id}')]
+public function show(
+#[MapEntity(expr: 'repository.find(product_id)')]
+Product $product
+): Response
+{
+	//...
+}
+```
+В данном случае `product_id` заменит `id` в качестве первичного ключа.
+
+Можно также через извлечение получать список сущностей:
+```php
+#[Route(path:'/list/{author_id}')]
+public function show(
+#[MapEntity(expr: 'repository.findBy({"author": author_id}, {}, 10)')]
+iterable $posts
+): Response
+{
+	//...
+}
+```
+
+Можно использовать также со множеством аргументов:
+```php
+#[Route(path:'/get/{id}/comments/{comment_id}')]
+public function(
+#[MapEntity(expr: 'repository.find(comment_id)')]
+Comment $comment
+): Response
+{
+	//...
+}
+```
