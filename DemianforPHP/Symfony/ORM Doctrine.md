@@ -317,3 +317,115 @@ Comment $comment
 	//...
 }
 ```
+
+Также можно расширить запрос с помощью обращения к request:
+```php
+#[Route(path:'/product/{id}/comments/')]
+public function show(
+#[MapEntity(expr: 'repository.findOneBy({"product": id, {"createdAt": request.query.get("sort", "DESC")}))]
+Comment $comment):Response
+{
+	//...
+}
+```
+----
+### Параметры MapEntity
+Для управления поведением атрибута, доступен ряд опций для MapEntity:
+- `id` - если доступна опция id, то узнаёт объект по первичному ключу:
+```php
+#[Route(path:'/getProduct/{product_id}')]
+public function get(
+#[MapEntity(id: 'product_id')]
+Product $product
+): Response
+{
+	//...
+}
+```
+
+- `mapping` - настраивает свойства и значения для findOneBy() - ключ это имя заполнителя роута, значение - имя свойства в doctrine:
+```php
+#[Route(path:'/product/{category}/{slug}/comments/{comment_slug}')]
+public function get(
+#[MapEntity(mapping: ['category' => 'category', 'slug' => 'slug'])]
+Product $product
+#[MapEntity(mapping: ['comment_slug' => 'slug])]
+Comment $comment
+): Response
+{
+	//...
+}
+```
+
+- `exclude` - настраивает свойства, которые должны использоваться в findOneBy, исключая одно или несколько совйств чтобы они не использовались:
+```php
+#[Route(path:'/product/{slug}/{date}')]
+public function get(
+#[MapEntity(exclude: ['date'])]
+Product $product
+DateTime $date
+): Response
+{
+	//если я правильно понял, то date в ссылке игнорируется в маппинге объекта Product и подтягивается отдельно в объект DateTime.
+}
+```
+
+- `stripNull` - если true, то при findOneBy() использовании любые значения null не будут использоваться для запроса.
+  
+<!> Нужно найти инфу об этом больше.
+  
+- `objectManager` - по умолчанию EntityValueResolver используется в маппинг, но его можно настроить:
+```php
+#[Route(path:'/prodcut/{id}')]
+public function get(
+#(MapEntity(objectManager: 'foo'))
+Product $product
+): Response
+{
+	//...
+}
+```
+
+- `evictCache` - если стоит true, то mapper всегда достаёт данные из БД, а не из кеша.
+- `disabled` - если стоит true, то исключает попытку EntityValueResolver заменить аргумент.
+- `message` - Необязательное пользовательское сообщение, отображаемое при NotFoundHttpException, но только в среде разработке. Не работает на проде.
+```php
+#[Route(path: '/product/{product_id}')]
+public function get(
+#[MapEntity(id: 'product_id', message: 'Увы и ах, не найдено ничего!')]
+Product $product
+): Response
+{
+	//...
+}
+```
+----
+### Обновление объекта
+После извлечения объекта из БД - можно с ним взаимодействовать, как и с обычным объектом php:
+```php
+class UpdateProduct
+{
+	public function __construct(
+	private readonly EntityManagerInterface $entityManager,
+	private readonly ProductRespository $productRepository,
+	) {}
+
+	#[Route(path:'/product/update', name: 'update_product', methods: ['POST'])]
+	public function update(Request $request): Response
+	{
+		$id = $request->getPayload()->get('id');
+		$newName = $request->getPayload()->get('name');
+
+		$productToUpdate = $this->ProductRepository->find($id);
+
+		if (null === $product) {
+			throw new Exception('Product not found');
+		}
+
+		$productToUpdate->setName($name);
+		$this->entityManager->flush();
+
+		return new Response('Updated product by id: ' . $product->getId());
+	}
+}
+```
