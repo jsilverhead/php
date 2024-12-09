@@ -425,7 +425,56 @@ class UpdateProduct
 		$productToUpdate->setName($name);
 		$this->entityManager->flush();
 
-		return new Response('Updated product by id: ' . $product->getId());
+		return $this->redirectToRoute('product_show', ['id' => $product->getId()])
+	}
+}
+```
+----
+### Удаление объекта:
+Тут всё просто, вызываем `remove()` в EntityManager:
+```php
+$this->entityManager->remove($entity);
+$this->entityManager->flush();
+```
+----
+### Запрос объектов: репозиторий
+В случае если нужны более сложные запросы, чем find или findOneBy.
+
+Версия с SQL запросом:
+```php
+class ProductRepository extends ServiceEntityRepository
+{
+	public function __construct(ManagerRegistry $registry) {
+		parent::construct($registry, Product::class);
+	}
+
+	public function listByCeilingPrice(int $ceiling) {
+		$entityManager = $this->getEntityManager();
+
+		$query = $entityManager->createQuery(
+		'SELECT * FROM p FROM App/Entity/Product WHERE p.price <= :ceiling ORDER BY p.price ASC'
+		)->setParameter('ceiling', $ceiling);
+
+		return $query->getResult;
+	}
+}
+```
+
+```php
+class ProductRepository extends ServiceEntityRepository
+{
+	public function __construct(ManagerRegistry $registry) {
+		parent::construct($registry, Product::Class);
+	}
+
+	public function getByPriceCeiling(int $ceiling) {
+		$products = $this->createQueryBuilder('p')
+		->where('p.rice <= :ceiling')
+		->setParameter('ceiling', $ceiling, Types:INTEGER)
+		->getQuery()
+		->getResult();
+
+		return $products;
 	}
 }
 ```
