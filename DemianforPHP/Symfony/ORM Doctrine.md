@@ -452,7 +452,10 @@ class ProductRepository extends ServiceEntityRepository
 		$entityManager = $this->getEntityManager();
 
 		$query = $entityManager->createQuery(
-		'SELECT * FROM p FROM App/Entity/Product WHERE p.price <= :ceiling ORDER BY p.price ASC'
+		'SELECT p 
+		FROM App/Entity/Product 
+		WHERE p.price <= :ceiling 
+		ORDER BY p.price ASC'
 		)->setParameter('ceiling', $ceiling);
 
 		return $query->getResult;
@@ -475,6 +478,26 @@ class ProductRepository extends ServiceEntityRepository
 		->getResult();
 
 		return $products;
+	}
+}
+```
+
+Можно также использовать прямой SQL запрос:
+```php
+class ProductRepository extends ServiceEntityRepository
+{
+	public function __construct(ManagerRegistry $registry) {
+	parent::construct($registry, Product::class);
+	}
+	
+	public function getByPriceCeiling(int $ceiling) {
+		$connection = $this->getEntityManager()->getConnection();
+
+		$sql = 'SELECT * FROM product p WHERE p.price <= :ceiling ORDER BY p.price ASC';
+
+		$result = $connection->executeQuery($sql, ['price' => $price]);
+
+		return $result->fetchAllAssociative();
 	}
 }
 ```
