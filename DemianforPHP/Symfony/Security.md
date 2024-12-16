@@ -330,3 +330,128 @@ return static function (SecurityConfig $security):void {
 [x] Поддерживает checkPath - url адреса и имена маршрутов. Аутентификатор запускается, когда клиент запрашивает check_path.
 
 Нужно сделать контроллер с этим путём
+```php
+class JsonLogin extends AbstractController
+{
+	#[Route(path: '/api/login/, name: 'api_login', methods: [Request::Method_POST])]
+	public function __invoke(#[CurrentUser] ?User $user): Response
+	{
+		if (null === $user) {
+			return $this->json([
+			'message' => 'Missing credentials'
+			], Response::HTTP_UNAUTHORIZED);
+		}
+
+		$token = // сделай токен сам
+
+		return $this->json([
+		'user' = $userName->getIdentifier,
+		'token' => $token,
+		])
+	}
+}
+```
+
+<!> Какая-то хуйня не рабочая, для работы JSON авторизации нужен свой аутентификатор.
+
+<!> Токен можно сгенерировать через `LexikJWTAuthenticationBundle` например
+
+----
+### HTTP-Аутентификация
+Это стандартизированный фреймворк HTTP-аутентификации. Он запрашивает учётные данные (имя пользователя, пароль) с помощью диалога в браузере, а HTTP basic authentificator Symfony проверяет эти данные.
+
+   ```php
+   return static function (SecurityConfig $secruity):void
+   {
+	   $mainFirewall = $security->firewall('main');
+	   $mainFirewall->httpBasic()->realm('Secured Area');
+   }
+```
+
+Каждый раз когда юзер заходит без авторизации, симфони его отправит на базовую HTTP-аутентификацию (Используя заголовок `WWW-Authenticate`). Аутентификатор проверяет данные и авторизирует пользователя.
+
+[x] Нельзя просто так взять и выйти из системы, используя HTTP аутентификатор, браузер запомнит данные и будет их отправлять при каждом запросе.
+
+----
+#### Ссылка для входа
+Это метод аутетинфикации без пароля. Пользователь получит кратковременную ссылку, которая его авторизует на сайте.
+
+<!> ТУТ НУЖНО БОЛЬШЕ ИНФЫ
+
+----
+#### Токены доступа
+Часто используются в контексте API: пользователь получает токен от сервера авторизации, который его авторизует.
+
+<!> ТУТ НУЖНО БОЛЬШЕ ИНФЫ
+
+----
+#### Клиентские сертификаты X.509
+При использовании клиентских сертификатов, сервер выполняет аутентификацию самостоятельно. Аутентификатор X.509 предоставляемый Symfony извлекат адрес почты из "различительного имени" клиентского сертификата.
+Затем использует этот адрес в качестве идентификатора пользователя в поставщике пользователя.
+
+I. Настрой веб-сервер
+```nginx
+server {
+	# ...
+	ssl_cleint_certificate /path/to/my-custom-CA.pem;
+
+	# включить валидацию сертификатов
+	ssl_verify_client optional;
+	ssl_verify_depth 1;
+
+	location / {
+		# Передать SSL_CLIENT_S_DN в приложение
+		fastcgi_param SSL_CLEINT_S_DN $ssl_client_s_dn
+	}
+}
+```
+
+II. Включить внутри конфига:
+```php
+return static function(SecurityConfig $config):void
+{
+	$mainFirewall = $secirty->firewall('main');
+	$mainFirewall->x509->provider('your_user_provider');
+}
+```
+
+По умолчанию Symfony извлекает данные из сертификата двумя разными способами:
+1. Сначала пробудет `SSL_CLIENT_S_DN_Email` параметр сервера, который предоставляется (?) Apache?
+2. Если не установлен (при использовании nginx) - используется `SSL_CLIENT_S_DN` и сопоставление значения следующее за `emailAddress`.
+
+Можно настроить имя некоторых параметров под x509 ключом.
+
+----
+#### Удалённые пользователи
+Помимо аутентификации клиенсткого сертификата, есть ещё модули веб-сервера, которые предварительно аутентифицируют пользователя (например kerberos). Удалённый аутентификатор пользователя обеспечивает базовую интеграцию для этих служб.
+
+Эти модули асто выставляют аутентифицированного пользователя в `REMOTE_USER` переменной окружения и использует это значение в качестве идентификатора пользователя.
+
+Включить удалённую аутентификацию пользователя можно с помощью `remote_user` ключа:
+```php
+return static function(SecurityConfig $security):void
+{
+	$mainFirewall = $security->firewall('main');
+	$mainFirewall->remoteUser()->provider('your_user_provider')
+}
+```
+----
+### Ограничение попыток входа:
+Тут всё просто, используем RateLimiter:
+```terminal
+composer require symfony/rate-limiter
+```
+
+
+```php
+return static function(SecurityConfig $security):void
+{
+	$mainFirewall = $security->firewall('main');
+	$mainFirewall->loginThrottling()->maxAttepts(3)->interval('15 minutes');
+	// два последних опциональны
+}
+```
+
+<!> Значение interval должно быть числом и значением времени после: day, hours, minutes, seconds.
+
+RateLimiter держит в кэше симфони предыдущие попытки входа. Можно также организовать собственное хранилище.
