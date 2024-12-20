@@ -455,3 +455,24 @@ return static function(SecurityConfig $security):void
 <!> Значение interval должно быть числом и значением времени после: day, hours, minutes, seconds.
 
 RateLimiter держит в кэше симфони предыдущие попытки входа. Можно также организовать собственное хранилище.
+
+<!> RateLimiter - не единственный метод для ограничения подбора пароля. Есть и другие методы защиты.
+
+Если нужен более сложный алгоритм ограничения, то можно создать свой RateLimiter используя `RateLimiterInterface` и нужно задать лимитеру id сервиса.
+```php
+return static function(FrameworkConfig $framework, ContainerBuilder $container, SecurityConfig $security):void
+{
+	$frameWork->rateLimiter()->limiter('username_ip_login')->policy('token_bucket')->limit(5)->rate()->interval('5minutes');
+
+	$framework->rateLimiter()->limiter('ip_login')->policy('sliding_window')->limit(50)->interval('15 minutes');
+
+	$container->register('app.login_rate_limiter', MyRateLimiter::class)->setArguments([
+	new Reference('limiter.ip_login'),
+	new Reference('limiter.username_ip_login')
+	param('kernel.secret')
+	]);
+
+	$mainFirewall = $security->firewall('main');
+	$mainFirewall->limiter('app.login_rate_limiter');
+}
+```
