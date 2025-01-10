@@ -732,4 +732,105 @@ return static function (SecurityConfig $security): void
 Добавление `^` - означают что будут учитываться пути, которые соответствуют началу шаблона.
 Путь без `^`, такой как `/admin` может соответствовать `/admin/foo`.
 
-Каждый accessControl может сопоставляться с IP адресом, именем хоста и HTTP методами.
+Каждый accessControl может сопоставляться с IP адресом, именем хоста и HTTP методами. А также может использоваться для редиректа польователя на http версию шаблона URL.
+Для более сложных нужд можно использовать `RequestMatcherInterface`.
+
+#### Обеспечение безопасности контроллера и другого кода
+Можно запретить доступ внутри контроллера:
+```php
+public function adminDashboard(): Response
+{
+	$this->denyAccessUnlessGranted('ROLE_ADMIN');
+
+	$this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'User tried to access a page without ROLE_ADMIN');
+}
+```
+
+Если доступ не предоставлен, то пользователь получить AccessIsDeniedException и 2 варианта развития событий:
+1. Перенаправление на авторизацию
+2. Получит страницу 403
+
+Есть также способ с использованием атрибутов `#[IsGranted]`:
+```php
+#[IsGranted('ROLE_ADMIN')]
+class AdminController extends AbstractController
+{
+	#[IsGranted('ROLE_SUPER_ADMIN', message: 'Not allowed to access admin dashboard')]
+	public function __invoke(): Response
+	{
+		//...
+	}
+}
+```
+
+Можно использовать другой статус код для `#[IsGranted]`:
+```php
+#[IsGranted('ROLE_ADMIN', statusCode: 423)]
+class AdminController extends AbstractController
+{
+	//...
+}
+```
+
+Можно задать внутренний код исключения AccessIsDeniedException для `#[IsGranted]`:
+```php
+#IsGranted('ROLE_ADMIN', statusCode: 423, exceptionCode: 2025)
+class AdminController extends AbstractController
+{
+	//...
+}
+```
+
+##### Контроль доступа в шаблонах
+```twig
+{% if is_granted('ROLE_ADMIN') %}
+	<a href="...">Delete</a>
+{% endif %}
+```
+
+##### Другие варианты
+Можно проверить доступ в любом месте кода, внедрив Security:
+```php
+class SalesReportManager
+{
+	public function __construct(private Security $security) {}
+
+	public function generateReport(): void
+	{
+		if ($this->security->isGranted('ROLE_SALES_ADMIN')) {
+			$salesData['top_secret_numbers'] = rand();
+		}
+	}
+}
+```
+
+При использовании security.yaml по умолчанию, Symfony автоматически передаст её `security.helper`.
+
+Можно использовать `AuthorizationCheckerInterface` - делает тоже самое, что и Security, но позволяет тайпи-хинтить более конкретный интерефейс.
+
+----
+#### Разрешение незащищенного доступа (анонимным пользователям)
+Неавторизированный пользователь также может получить доступ к страницам публичного доступа, для этого нужно использовать атрибут `PUBLIC_ACCESS`:
+```php
+return static function (SecurityConfig $security): void
+{
+	$secuirty->enableAuthenticationManager(true);
+
+	// публичный доступ для авторизации
+	$security->accessControl()->path('^/admin/login')->roles([AuthenticatedVoter::PUBLIC_ACCESS]);
+
+	// но приватный для других страниц
+	$security->accessControl()->path('^/admin')->roles(['ROLE_ADMIN']);
+
+}
+```
+----
+#### Использование Voter'ов
+Voter определяет возможность пользователя иметь доступ к определённым действиям или нет.
+Кастомные воутеры могут помочь с созданием гибкого доступа к системе:
+```php
+class PostVoter extends Voter
+{
+
+}
+```
