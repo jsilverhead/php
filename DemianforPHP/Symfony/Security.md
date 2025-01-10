@@ -472,7 +472,264 @@ return static function(FrameworkConfig $framework, ContainerBuilder $container, 
 	param('kernel.secret')
 	]);
 
-	$mainFirewall = $security->firewall('main');
-	$mainFirewall->limiter('app.login_rate_limiter');
+	$security->firewall('main')->loginThrottling()->limiter('app.login_rate_limiter');
 }
 ```
+----
+### Поведение при успешной и неудачной аутентификации
+Чтобы настроить успешный или неудачный запрос аутентификации, можно задать пользовательские обработки успеха и неудачи, реализуя `AuthenticationSuccessHandlerInterface` или `AuthentificationFailureHanlderInterface`.
+
+#### Войти программно
+Можно авторизовать пользователя, используя `login()` метод:
+```php
+class SecurityController
+{
+	public function someAction(Security $security): Response
+	{
+		$user = ...
+
+		// авторизация через текущий firewall
+		$security->login($user);
+
+		// если аутентификаторов несколько, то можно уточнить какой через имя
+		$security->login($user, 'form_login');
+
+		// или через идентификатор
+		$security->login($user, ExampleAuthenticator::class);
+		
+		// или в другом фаерволле 
+		$security->login($user, 'from_login', 'other_firewall');
+
+		// с использованием беджей
+		$security->login($user, 'form_login', 'other_firewall', [(new RememberMeBadge())->enable()], ['referer' => 'https://oauth.example.com']]);
+
+		// с добавлением логики редиректа
+		$redirectResponse = $security->login($user);
+		return $redirectResponse;
+	}
+}
+```
+
+`бейдж` - особый идентификатор, которые цепляется к паспорту пользователя, это дополнительная запись даёт больше информации о пользователе или его роли.
+
+#### Выход из системы
+Для выхода из системы используется метод `logout()`.
+```php
+return static function (SecurityConfig $security):void {
+$mainFirewall = $security->firewall('main');
+$mainFirewall->logout()->path('/logout');
+// при желании редиректа после разлогина написать ->target('<route>');
+}
+```
+
+Symfony отменит авторизацию пользователей, перешелших по роуту и если настроен target, то направит его туда.
+
+<!> При необходимости указать путь выхода из системы, можно использовать `_logout_<firewallname>` имя маршрута (например, `_logout_main`).
+
+Если проект не использует Symfony Flex, то нужно убедиться что импортирован загрузчик маршрута выхода из системы в роуты:
+```php
+return static function (SecurityConfig $security):void
+{
+	$routes->import('security.route_loader.logout', 'service');
+}
+```
+
+#### Выйти программно
+Можно программно выйти из системы, используя `logout()` метод:
+```php
+class SecurityController
+{
+	public function someAction(Secuirty $security): Response
+	{
+	// разлогиниться в текущем фаерволле
+		$response = $security->logout();
+
+	// можно отключить csrf logout
+		$response = $scurity->logout(false);
+	}
+}
+```
+
+Если пользователь вне firewall'а, то в таком случае он получит logicException.
+
+`SCRF` - защита от атаки, когда вредоносный сайт использует "чужие" cookie чтобы отправлять авторизированные запросы для кражи данных/денег.
+Защитой от такой атаки является `CSRF` токен. Скрытый токен, который отправляет сервер и проверяет в последующем совпадение токенов.
+Если не совпадает - не пропустит.
+
+#### Настройка выхода из системы
+Если нужно внедрить дополнительную логику при разлогинивании сстемы или настроить что происходит при выходе, зарегистрируй `EventSubscriber`:
+```php
+class LogoutSubscriber implements EventSubscriberInterface
+{
+	public function __construct(private UrlGeneratorInterface $urlGenerator)
+	{
+	}
+
+	public static function getSubscribedEvents(): array
+	{
+	return [LogoutEvent::class => 'logout']
+	}
+
+	public function onLogout(LogoutEvent $event):void
+	{
+		// оплучить токен сессии пользователя
+		$token = $event->getToken();
+
+		// получить текущий запрос
+		$request = $event->getReuqest();
+
+		// получить текущий ответ, если настроен другим listener'ом
+		$response = $event->getReponse();
+
+		// настроить кастомный редирект
+		$response = new RedirectResponsse($this->urlGenerator->geterate('homepage'), RedirectResponse::HTTP_SEE_OTHER);
+		$event->setResponse($response);
+	}
+}
+```
+
+#### Настройка роута для выхода из системы
+Другой способ - настроить path как имя маршрута, на случай если хочется сделать динамический URI (например при работе с локалями).
+```php
+return function (RoutingConfigurator $routes): void {
+	$routes->add('app_logout', [
+	'en' => '/logout',
+	'fr' => '/deconnexion',
+	])
+	->methods(['GET']);
+};
+```
+Затем нужно передать имя маршрута в path. Например:
+```php
+return static function (SecurityConfig $security): void {
+	$firewall = $security->fireWall('main');
+	$firewWall->logout()->path('app_logout');
+};
+```
+
+----
+### Извлечение объекта пользователя
+После аутентификации можно получить данные о пользователе через `getUser()` метод:
+```php
+class ProfileController extends AbstractController
+{
+	public function __invoke(): Response
+	{
+		// сперва нужно проверить что пользователь авторизован
+		$this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+		// возвращает объект "User"
+		$user = $this->getUser();
+
+		return new Response('Wll hi there ' . $user->getName());
+	}
+}
+```
+----
+### Извлечение пользователя из сервиса
+Если нужно получить авторизованного пользователя из сервиса, то можно воспользоваться Security:
+```php
+class ExampleService
+{
+	public function __construct(private Secuirty $security) {}
+
+	public function someMethod():void
+	{
+		$user = $this->seciruty->getUser();
+
+		//...
+	}
+}
+```
+----
+### Извлечь пользователя из шаблона
+В шаблонах используется команда `app.user`:
+```twig
+{% if is_granted('IS_AUTHENTICATED_FULLTY')%}
+<p>Email: {{ app.user.email }}</p>
+{% endif %}
+```
+----
+### Контроль доступа (авторизация)
+Необходимо настроить доступ пользователя к разным возможнотям и роутам приложения.
+Процесс авторизации имеет 2 различные стороны:
+1. При авторизации пользователь получит определённую роль (`ROLE_AMIN`).
+2. Теперь для роута требуется идентификатор роли, например атрибут в роуте.
+
+#### Роли
+Когда пользователь входит в систему, Symfony вызывает `getRoles()` из вашего объекта `User`, чтобы определить роли пользователя.
+Роли в `User` представляют собой массив. У каждого пользователя ест как минимум одна роль: ROLE_USER:
+
+```php
+class User
+{
+	#[ORM\Column(type:'json')]
+	private array $roles = [];
+
+	public function getRoles():array
+	{
+		$roles = $this->roles;
+		$roles[] = 'ROLE_USER';
+
+		return array_unique($roles);
+	}
+}
+```
+
+Можно самостоятельно определить какие роли получит автоматически пользователь. Единственное правило, что роль должна начинаться с префикса `ROLE_`.
+
+Далее эти роли можно будет использовать для доступа к разным роутам приложения.
+
+##### Иерархические роли
+Вместо того чтобы назначать множество ролей, можно сделать насладеование ролей, создав иерархию:
+```php
+return static function (SecurityConfig $security): void
+{
+	$secuirty->roleHierarchy('ROLE_ADMIN',['ROLE_USER']);
+	$secuirty->roleHierarchy('ROLE_SUPER_ADMIN', ['ROLE_ADMIN', 'ROLE_ALLOWED_TO_SWITCH'])
+}
+```
+
+[x] Для наследования ролей лучше не использовать `$user->gerRoles()`:
+```php
+// например в контроллере для проверки наличия роли в иерархии, getRoles ничего не знает об иерархии
+	$hasAccess = in_array('ROLE_ADMIN', $user->getRoles());
+```
+----
+#### Добавить код для запрета доступа
+Есть два способа запрета доступа:
+1. access_control в security.yaml позволяет защитить весь шаблон URL
+2. В контроллере (`$this->denyAccessUnlessGranted('ROLE_ADMIN')`)
+
+#### Защита шаблонов URL (access_control)
+Самый простой способ защиты приложения - защитить шаблон URL в `security.yaml`. Например, чтобы запросить `ROLE_ADMIN` для всех URL, которые начинаются с `/admin`:
+```php
+return static function (SecurityConfig $security):void
+{
+	$mainFirewall = $security->firewall('main');
+
+	// рекомендует роль админа для всех роутов /admin
+	$security->accessControl()->path('^/admin')->roles(['ROLE_ADMIN']);
+
+	// рекомендует 2 роли для всех роутов /admin
+	$security->acessControl()->path('^/admin')->roles(['ROLE_ADMIN', 'IS_AUTHENTICATED_FULLY']);
+
+	// роут может быть регулярным выражением, например post или comment
+	$security->accessControl()->path('^/api/(post|comment)/\d+$')->roles(['ROLE_USER'];)
+};
+```
+
+Можно определить количество URL-шаблонов сколько нужно, каждный из них является регулярным выражением, но только один будет соответствовать запросу: Symfony начинает с начала списка и останавливается при первом совпадении:
+```php
+return static function (SecurityConfig $security): void
+{
+	$security->accessControl()->path('^/admin/users')->roles(['ROLE_SUPER_ADMIN']);
+
+	$security->accessControl()->path('^/admin')->roles(['ROLE_ADMIN']);
+}
+```
+
+Добавление `^` - означают что будут учитываться пути, которые соответствуют началу шаблона.
+Путь без `^`, такой как `/admin` может соответствовать `/admin/foo`.
+
+Каждый accessControl может сопоставляться с IP адресом, именем хоста и HTTP методами.
