@@ -117,7 +117,7 @@ import (
 
 func main() {
 	mu := sync.Mutex{}
-	wg :=sync.WaitGroup{}
+	wg := sync.WaitGroup{}
 
 	sum := 0
 
