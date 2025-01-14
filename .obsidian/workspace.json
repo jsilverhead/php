@@ -16,7 +16,9 @@
                 "file": "DemianforPHP/13. Перечисления.md",
                 "mode": "source",
                 "source": false
-              }
+              },
+              "icon": "lucide-file",
+              "title": "13. Перечисления"
             }
           },
           {
@@ -25,10 +27,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "DemianforPHP/14. Контроллеры.md",
+                "file": "DemianforGO/Массивы.md",
                 "mode": "source",
                 "source": false
-              }
+              },
+              "icon": "lucide-file",
+              "title": "Массивы"
             }
           }
         ],
@@ -52,7 +56,9 @@
               "type": "file-explorer",
               "state": {
                 "sortOrder": "alphabetical"
-              }
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
             }
           },
           {
@@ -67,7 +73,9 @@
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical"
-              }
+              },
+              "icon": "lucide-search",
+              "title": "Search"
             }
           },
           {
@@ -75,7 +83,9 @@
             "type": "leaf",
             "state": {
               "type": "bookmarks",
-              "state": {}
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
             }
           }
         ]
@@ -98,7 +108,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "DemianforPHP/14. Контроллеры.md",
+                "file": "DemianforGO/Массивы.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -106,7 +116,9 @@
                 "searchQuery": "",
                 "backlinkCollapsed": false,
                 "unlinkedCollapsed": true
-              }
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks for Массивы"
             }
           },
           {
@@ -115,10 +127,12 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "DemianforPHP/14. Контроллеры.md",
+                "file": "DemianforGO/Массивы.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
-              }
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links from Массивы"
             }
           },
           {
@@ -129,7 +143,9 @@
               "state": {
                 "sortOrder": "frequency",
                 "useHierarchy": true
-              }
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
             }
           },
           {
@@ -138,8 +154,10 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "DemianforPHP/14. Контроллеры.md"
-              }
+                "file": "DemianforGO/Массивы.md"
+              },
+              "icon": "lucide-list",
+              "title": "Outline of Массивы"
             }
           }
         ]
@@ -159,8 +177,15 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "4aefa6027fc40b67",
+  "active": "a78637ee76216e17",
   "lastOpenFiles": [
+    "DemianforGO/Наследование и интерфейсы.md",
+    "DemianforGO/Массивы.md",
+    "DemianforGO/Циклы.md",
+    "DemianforGO/Структуры.md",
+    "DemianforGO/gRPC.md",
+    "DemianforGO/Что там в GO.md",
+    "DemianforGO/Константы.md",
     "DemianforPHP/13. Перечисления.md",
     "DemianforPHP/14. Контроллеры.md",
     "DemianforPHP/6. Классы и основы ООП.md",
