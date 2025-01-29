@@ -27,12 +27,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "DemianforPHP/Symfony/Тесты.md",
+                "file": "DemianforGO/Что там в GO.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Тесты"
+              "title": "Что там в GO"
             }
           }
         ],
@@ -177,39 +177,41 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "a78637ee76216e17",
+  "active": "4aefa6027fc40b67",
   "lastOpenFiles": [
-    "DemianforPHP/Symfony/Лучшие практики.md",
-    "DemianforPHP/Symfony/Тесты.md",
-    "DemianforGO/Массивы.md",
+    "Terraform",
     "DemianforGO/Наследование и интерфейсы.md",
-    "DemianforGO/Циклы.md",
-    "DemianforGO/Структуры.md",
-    "DemianforGO/gRPC.md",
+    "DemianforGO/Математика и числа.md",
+    "DemianforGO/Массивы.md",
+    "DemianforGO/Логические типы.md",
     "DemianforGO/Что там в GO.md",
+    "DemianforGO/gRPC.md",
+    "DemianforGO/Переменные.md",
+    "DemianforGO/Строки.md",
+    "DemianforGO/Структуры.md",
+    "DemianforGO/Условные конструкции.md",
+    "DemianforGO/Функции.md",
+    "DemianforPHP/6. Классы и основы ООП.md",
+    "DemianforPHP/Symfony/ORM Doctrine.md",
+    "DemianforPHP/Symfony/Docker-compose.md",
+    "DemianforPHP/Symfony/Compiler Pass.md",
+    "DemianforPHP/Symfony/Тесты.md",
+    "DemianforPHP/Symfony/Лучшие практики.md",
+    "DemianforPHP/Symfony/Rate Limiting.md",
+    "DemianforPHP/Symfony/Security.md",
+    "DemianforPHP/Symfony/Unit of work.md",
+    "DemianforPHP/Symfony/Symfony.md",
+    "DemianforGO/Циклы.md",
     "DemianforGO/Константы.md",
     "DemianforPHP/13. Перечисления.md",
     "DemianforPHP/14. Контроллеры.md",
-    "DemianforPHP/6. Классы и основы ООП.md",
-    "DemianforPHP/7. Try Catch.md",
-    "DemianforPHP/12. Генераторы.md",
-    "DemianforPHP/9. Fibers.md",
-    "DemianforPHP/11. Атрибуты.md",
     "DemianforPHP/sandbox/foo.jpg",
-    "DemianforPHP/10. Базы данных.md",
-    "DemianforPHP/3. Условия и рекурсия.md",
-    "DemianforPHP/1. Переменные и выражения.md",
-    "DemianforPHP/Учебный план.md",
-    "DemianforPHP/8. Позднее связывание.md",
-    "DemianforPHP/5. Массивы.md",
-    "DemianforPHP/4. Итерации (Циклы).md",
     "Project/Server/server.py",
     "Project/Server/index.html",
     "Project/Server/Dockerfile",
     "Project/Server",
     "Project/docker-compose.yml",
     "Project/Client",
-    "Project",
-    "DemianforPHP/2. Функции.md"
+    "Project"
   ]
 }
