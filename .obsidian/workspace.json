@@ -41,12 +41,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "DemianforPHP/Symfony/Symfony.md",
+                "file": "DemianforPHP/Symfony/Ответы на вопросы.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Symfony"
+              "title": "Ответы на вопросы"
             }
           }
         ],
@@ -191,8 +191,11 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "4aefa6027fc40b67",
+  "active": "b9ee2fe13d2432be",
   "lastOpenFiles": [
+    "DemianforPHP/Symfony/Symfony.md",
+    "DemianforPHP/Прикладное.md",
+    "DemianforPHP/Symfony/Ответы на вопросы.md",
     "DemianforPHP/Symfony/Security.md",
     "DemianforPHP/Symfony/Rate Limiting.md",
     "DemianforPHP/Symfony/ORM Doctrine.md",
@@ -200,8 +203,6 @@
     "DemianforPHP/Symfony/Compiler Pass.md",
     "DemianforPHP/Symfony/Тесты.md",
     "DemianforPHP/Symfony/Лучшие практики.md",
-    "DemianforPHP/Прикладное.md",
-    "DemianforPHP/Symfony/Symfony.md",
     "DemianforPHP/DFS (поиск в глубину).md",
     "DemianforPHP/BFS (Поиск в ширину).md",
     "DemianforPHP/Учебный план.md",
@@ -219,7 +220,6 @@
     "DemianforGO/Переменные.md",
     "DemianforGO/Строки.md",
     "DemianforGO/Структуры.md",
-    "DemianforGO/Условные конструкции.md",
     "DemianforPHP/sandbox/foo.jpg",
     "Project/Server/server.py",
     "Project/Server/index.html",
