@@ -41,12 +41,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "DemianforPHP/Symfony/Logger.md",
+                "file": "DemianforPHP/Symfony/Docker-compose.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Logger"
+              "title": "Docker-compose"
             }
           }
         ],
@@ -193,22 +193,22 @@
   },
   "active": "b9ee2fe13d2432be",
   "lastOpenFiles": [
-    "DemianforPHP/Symfony/Лучшие практики.md",
-    "DemianforPHP/Symfony/Консольные приложения.md",
-    "DemianforPHP/Symfony/Парсеры.md",
-    "DemianforPHP/Symfony/Logger.md",
-    "DemianforPHP/Symfony/Doctrine Events.md",
-    "DemianforPHP/Symfony/ORM Doctrine.md",
-    "DemianforPHP/Прикладное.md",
-    "DemianforPHP/Symfony/SSE (Server Sent Events).md",
     "DemianforPHP/Symfony/Composer.md",
-    "DemianforPHP/Symfony/Symfony.md",
-    "DemianforPHP/Symfony/Ответы на вопросы.md",
-    "DemianforPHP/Symfony/Security.md",
-    "DemianforPHP/Symfony/Rate Limiting.md",
-    "DemianforPHP/Symfony/Docker-compose.md",
     "DemianforPHP/Symfony/Compiler Pass.md",
     "DemianforPHP/Symfony/Тесты.md",
+    "DemianforPHP/Symfony/Парсеры.md",
+    "DemianforPHP/Symfony/Лучшие практики.md",
+    "DemianforPHP/Symfony/Ответы на вопросы.md",
+    "DemianforPHP/Symfony/Консольные приложения.md",
+    "DemianforPHP/Symfony/Doctrine Events.md",
+    "DemianforPHP/Прикладное.md",
+    "DemianforPHP/Symfony/Logger.md",
+    "DemianforPHP/Symfony/Docker-compose.md",
+    "DemianforPHP/Symfony/ORM Doctrine.md",
+    "DemianforPHP/Symfony/SSE (Server Sent Events).md",
+    "DemianforPHP/Symfony/Symfony.md",
+    "DemianforPHP/Symfony/Security.md",
+    "DemianforPHP/Symfony/Rate Limiting.md",
     "DemianforPHP/DFS (поиск в глубину).md",
     "DemianforPHP/BFS (Поиск в ширину).md",
     "DemianforPHP/Учебный план.md",
