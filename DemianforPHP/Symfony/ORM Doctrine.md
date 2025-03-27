@@ -1,5 +1,5 @@
 Настройка обновление схемы БД через доктрину.
-```php
+```xml
 #config без миграций:
 <configuration default="false" name="Setup clean DB" type="PhpLocalRunConfigurationType" factoryName="PHP Console" path="$PROJECT_DIR$/app/bin/console" scriptParameters="doctrine:schema:update --force --no-interaction --env=test">
 ```
@@ -168,7 +168,7 @@ class GetProduct
 			throw new Exception('id required');
 		}
 
-		$product = $this->entityManager->getRepository(Product::class)=>find($id);
+		$product = $this->entityManager->getRepository(Product::class)->find($id);
 	}
 
 		if (null === $product) {
