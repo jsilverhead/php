@@ -35,20 +35,27 @@ bin/console list doctrine
 ```
 ----
 #### Создание класса сущности
-```terminal
+```bash
 bin/console make:entity <name>
 ```
 Команда создаёт php class-сущность.
 
 <!> Начиная с MakerBundle v1.57.0 можно создать сущность с Uuid вместо цифрового id:
-```terminal
+```bash
 bin/console make:entity --with-uuid
 ```
+
+#### Создание схемы
+Для быстрого теста сущностей и БД необходимо использовать:
+```bash
+php bin/console doctrine:schema:update --force
+```
+
 ----
 ### Миграции
 Для сохранения сущности в БД и создание под неё таблицу необходимо сделать миграцию.
 Миграцию можно сделать, путём команды:
-```terminal
+```bash
 bin/console make:migration
 ```
 
