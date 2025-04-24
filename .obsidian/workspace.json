@@ -41,12 +41,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "DemianforPHP/Symfony/Практическое/Удаление пользователя (soft-delete).md",
+                "file": "DemianforPHP/Мидловое/СУБДъ.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Удаление пользователя (soft-delete)"
+              "title": "СУБДъ"
             }
           }
         ],
@@ -193,11 +193,17 @@
   },
   "active": "b9ee2fe13d2432be",
   "lastOpenFiles": [
-    "DemianforPHP/Прикладное.md",
+    "Pasted image 20250424125749.png",
+    "Pasted image 20250424123943.png",
+    "Pasted image 20250424123327.png",
+    "DemianforPHP/Symfony/Практическое/Всякое для QueryBuilder.md",
+    "DemianforPHP/Мидловое/СУБДъ.md",
+    "DemianforPHP/Мидловое",
+    "DemianforPHP/Symfony/ORM Doctrine.md",
     "DemianforPHP/Symfony/Практическое/Удаление пользователя (soft-delete).md",
+    "DemianforPHP/Прикладное.md",
     "DemianforPHP/Symfony/Практическое",
     "DemianforPHP/Symfony/Тесты.md",
-    "DemianforPHP/Symfony/ORM Doctrine.md",
     "DemianforPHP/Symfony/Symfony.md",
     "DemianforPHP/Symfony/Unit of work.md",
     "DemianforPHP/Symfony/WebSocket.md",
@@ -217,9 +223,6 @@
     "DemianforPHP/Symfony/Compiler Pass.md",
     "DemianforPHP/Symfony/Docker-compose.md",
     "DemianforPHP/Symfony/Парсеры.md",
-    "DemianforPHP/Symfony/Лучшие практики.md",
-    "DemianforPHP/Symfony/Ответы на вопросы.md",
-    "DemianforPHP/Symfony/Консольные приложения.md",
     "Terraform",
     "DemianforPHP/sandbox/foo.jpg",
     "Project/Server/server.py",
