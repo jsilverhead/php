@@ -27,12 +27,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "DemianforGO/Циклы.md",
+                "file": "DemianforPHP/Мидловое/СУБДъ.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Циклы"
+              "title": "СУБДъ"
             }
           }
         ],
@@ -179,6 +179,7 @@
   },
   "active": "a78637ee76216e17",
   "lastOpenFiles": [
+    "DemianforGO/Циклы.md",
     "Pasted image 20250424125749.png",
     "Pasted image 20250424123943.png",
     "Pasted image 20250424123327.png",
