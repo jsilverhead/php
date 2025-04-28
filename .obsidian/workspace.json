@@ -27,12 +27,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "DemianforPHP/Мидловое/СУБДъ.md",
+                "file": "DemianforPHP/Мидловое/Брокеры сообщений.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "СУБДъ"
+              "title": "Брокеры сообщений"
             }
           }
         ],
@@ -179,11 +179,12 @@
   },
   "active": "a78637ee76216e17",
   "lastOpenFiles": [
+    "DemianforPHP/Мидловое/СУБДъ.md",
+    "DemianforPHP/Мидловое/Брокеры сообщений.md",
     "DemianforGO/Циклы.md",
     "Pasted image 20250424125749.png",
     "Pasted image 20250424123943.png",
     "Pasted image 20250424123327.png",
-    "DemianforPHP/Мидловое/СУБДъ.md",
     "DemianforPHP/Symfony/Практическое/Всякое для QueryBuilder.md",
     "DemianforPHP/Мидловое",
     "DemianforPHP/Symfony/ORM Doctrine.md",
@@ -209,7 +210,6 @@
     "DemianforPHP/Symfony/Composer.md",
     "DemianforPHP/Symfony/Compiler Pass.md",
     "DemianforPHP/Symfony/Docker-compose.md",
-    "DemianforPHP/Symfony/Парсеры.md",
     "Terraform",
     "DemianforPHP/sandbox/foo.jpg",
     "Project/Server/server.py",
