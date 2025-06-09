@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "DemianforPHP/13. Перечисления.md",
+                "file": "DemianforPHP/Мидловое/FUS/Работа S3 хранилища.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "13. Перечисления"
+              "title": "Работа S3 хранилища"
             }
           },
           {
@@ -27,16 +27,15 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "DemianforPHP/Мидловое/Брокеры сообщений.md",
+                "file": "DemianforPHP/Мидловое/FUS/Прикладное.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Брокеры сообщений"
+              "title": "Прикладное"
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "vertical"
@@ -178,8 +177,17 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "a78637ee76216e17",
+  "active": "0bcc92d10e1a85ef",
   "lastOpenFiles": [
+    "DemianforPHP/Мидловое/FUS/Прикладное.md",
+    "DemianforPHP/Мидловое/FUS/Работа S3 хранилища.md",
+    "DemianforPHP/Мидловое/FUS/Под капотом.md",
+    "DemianforPHP/Мидловое/FUS/FUS (File Uploading System) - Общее.md",
+    "DemianforPHP/13. Перечисления.md",
+    "DemianforPHP/Мидловое/FUS/Детали реализации.md",
+    "DemianforPHP/Мидловое/FUS/Возможные ошибки.md",
+    "DemianforPHP/Мидловое/FUS",
+    "DemianforPHP/Мидловое/Брокеры сообщений.md",
     "DemianforPHP/Symfony/Ответы на вопросы.md",
     "DemianforPHP/Symfony/Парсеры.md",
     "DemianforPHP/Symfony/Тесты.md",
@@ -191,7 +199,6 @@
     "DemianforPHP/12. Генераторы.md",
     "DemianforPHP/Учебный план.md",
     "DemianforPHP/Прикладное.md",
-    "DemianforPHP/Мидловое/Брокеры сообщений.md",
     "DemianforPHP/Мидловое/СУБДъ.md",
     "DemianforGO/Циклы.md",
     "Pasted image 20250424125749.png",
@@ -204,13 +211,6 @@
     "DemianforPHP/Symfony/Практическое",
     "DemianforPHP/Symfony/Symfony.md",
     "DemianforPHP/Symfony/Unit of work.md",
-    "DemianforPHP/Symfony/WebSocket.md",
-    "DemianforPHP/8. Позднее связывание.md",
-    "DemianforPHP/9. Fibers.md",
-    "DemianforPHP/Symfony/Doctrine Events.md",
-    "DemianforPHP/Symfony/Конфиги.md",
-    "DemianforPHP/sandbox/Untitled.md",
-    "DemianforPHP/Symfony/Security.md",
     "Terraform",
     "DemianforPHP/sandbox/foo.jpg",
     "Project/Server/server.py",
@@ -218,7 +218,6 @@
     "Project/Server/Dockerfile",
     "Project/Server",
     "Project/docker-compose.yml",
-    "Project/Client",
-    "Project"
+    "Project/Client"
   ]
 }
