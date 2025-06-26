@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "DemianforPHP/Мидловое/Системы кеширования/Общее.md",
+                "file": "DemianforPHP/Мидловое/Многоуровневая архитектура/Общее.md",
                 "mode": "source",
                 "source": false
               },
@@ -179,8 +179,10 @@
   },
   "active": "0bcc92d10e1a85ef",
   "lastOpenFiles": [
-    "DemianforPHP/Мидловое/SSE/Под капотом.md",
     "DemianforPHP/Мидловое/Системы кеширования/Общее.md",
+    "DemianforPHP/Мидловое/Многоуровневая архитектура/Общее.md",
+    "DemianforPHP/Мидловое/Многоуровневая архитектура",
+    "DemianforPHP/Мидловое/SSE/Под капотом.md",
     "DemianforPHP/Мидловое/Системы кеширования",
     "DemianforPHP/Мидловое/SSE/Для Frontend.md",
     "DemianforPHP/Мидловое/SSE/Общее.md",
@@ -210,14 +212,12 @@
     "DemianforPHP/Мидловое/FUS/Работа S3 хранилища.md",
     "DemianforPHP/Мидловое/Брокеры сообщений",
     "DemianforPHP/Мидловое/FUS/Прикладное.md",
-    "DemianforPHP/Мидловое/FUS/Под капотом.md",
     "DemianforPHP/Мидловое/FUS",
     "Pasted image 20250424125749.png",
     "Pasted image 20250424123943.png",
     "Pasted image 20250424123327.png",
     "DemianforPHP/Мидловое",
     "DemianforPHP/Symfony/Практическое",
-    "Terraform",
     "DemianforPHP/sandbox/foo.jpg"
   ]
 }
