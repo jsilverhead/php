@@ -107,3 +107,14 @@ $messages = $this->redis->xread(['notifications_stream' => '0'], 10, 3000);
 Разница между Pub/Sub и Streams:
 - Streams - это лог сообщений, где данные о сообщениях хранятся и их можно перечитывать.
 - Это вещание в реальном времени без сохранения.
+
+### Запуск в docker-compose
+```yaml
+version: "3.8"
+
+services:
+	redis:
+		image: redis:6-alpine
+		command: [redis-server, --appendonly, "yes"]
+		container_name: ${COMPOSE_PROJECT_NAME}-redis
+```

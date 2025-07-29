@@ -134,3 +134,21 @@ class EmailNotificationHandler
 ```bash
 php bin/console rabbitmq:consumer email_consumer -vvv
 ```
+
+
+### Запуск в Docker-compose
+
+```yaml
+version: '3.8'
+
+services:
+	rabbitmq:
+		image: rabbitmq:3.12-management
+		ports:
+			- "5672:5672"
+			- "15672:15672"
+		volumes:
+			- rabbitmq_data:/var/lib/rabbitmq
+```
+
+После запуска можно проверить по адресу http://localhost:15672

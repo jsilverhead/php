@@ -90,3 +90,44 @@ class KafkaNotificationHandler
 ```bash
 php bin/console enqueue:consume -vvv
 ```
+
+### Запуск в docker-compose
+Требует запуска двух сервисов - Kafka и Zookeeper
+```yaml
+version: '3.8'
+
+services:
+	zookeeper:
+		image: confluentinc/cp-zookeper:7.4.0
+		ports:
+			- "2181:2181"
+		environment:
+			ZOOKEPER_CLIENT_PORT: 2181
+
+	kafka:
+		image: confuentinc/cp-kafka:7.4.0
+		ports:
+			- "9092:9092"
+		environment:
+			KAFKA_BROKER_ID: 1
+			KAFKA_ZOOKEPER_CONNECT: zookeper:2181
+			KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT, PLAINTEXT_INTERNAL:PLAINTEXT
+			KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,PLAINTEXT_INTERNAL://kafka:29092
+			KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+		depends_on:
+			- zookeeper
+```
+
+Проверить работу через Kafkacat
+
+##### По переменных окружения:
+- `KAFKA_BROKER_ID` - уникальный идентификатор брокера в кластере
+Аналог в конфиге `broker.id`
+- `KAFKA_ZOOKEEPER_CONNECT` - указывает на адрес Zookeeper, который управляет метаданными Kafka - топики, партции, брокеры
+- `KAFKA_LISTENER_SECURITY_PROTOCOL_MAP` - определяет протоколы безопасности для листенеров. Формат `ИМЯ_ЛИСТЕНЕРА:ПРОТОКОЛ,ИМЯ_ЛИСТЕНЕРА2:ПРОТОКОЛ`.
+	Варианты протоколов:
+	- PLAINTEXT - без шифрования, для тестов
+	- SSL - с шифрованием
+	- SASL_PLAINTEXT - аутентификация без шифрования
+	- SASL_SSL - аутентификация + шифрование
+- `KAFKA-ADVERTISED_LISTENERS` - адреса, которые Kafka сообщает клиентам для подключения. В моём случае `localhost:9092` - для клиентов на хосте (вне docker) и `kafka:29092` для клиентов внутри Docker-сети. Если Kafka в кластере, то нужно указать реальные DNS\IP адреса.
