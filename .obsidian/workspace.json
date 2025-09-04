@@ -27,12 +27,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "DemianforPHP/Мидловое/Инфраструктура/Lens.md",
+                "file": "DemianforPHP/Мидловое/FUS/FUS (File Uploading System) - Общее.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Lens"
+              "title": "FUS (File Uploading System) - Общее"
             }
           }
         ],
@@ -181,6 +181,9 @@
   },
   "active": "0accbddd72860313",
   "lastOpenFiles": [
+    "DemianforPHP/Мидловое/FUS/Под капотом.md",
+    "DemianforPHP/Мидловое/FUS/Детали реализации.md",
+    "DemianforPHP/Мидловое/FUS/Возможные ошибки.md",
     "DemianforPHP/Мидловое/Инфраструктура/Lens.md",
     "DemianforPHP/Мидловое/Инфраструктура",
     "DemianforPHP/Прикладное.md",
@@ -211,9 +214,6 @@
     "DemianforPHP/Мидловое/Системы кеширования",
     "DemianforPHP/Мидловое/Email Sender/DSN и Transport.md",
     "DemianforPHP/Мидловое/SSE",
-    "DemianforPHP/Мидловое/Email Sender/Под капотом.md",
-    "DemianforPHP/Мидловое/Email Sender/Общее.md",
-    "DemianforPHP/Мидловое/Best Practices/DRY.md",
     "DemianforPHP/Мидловое/Email Sender",
     "DemianforPHP/Мидловое/Best Practices",
     "DemianforPHP/Мидловое/Брокеры сообщений/Untitled",
