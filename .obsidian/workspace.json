@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "DemianforPHP/Мидловое/Управление памятью/Общее.md",
+                "file": "DemianforPHP/Мидловое/Многоуровневая архитектура/Общее.md",
                 "mode": "source",
                 "source": false
               },
@@ -22,20 +22,21 @@
             }
           },
           {
-            "id": "a78637ee76216e17",
+            "id": "0accbddd72860313",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "DemianforPHP/Мидловое/FUS/Прикладное.md",
+                "file": "DemianforPHP/Мидловое/Инфраструктура/Lens.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Прикладное"
+              "title": "Lens"
             }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -169,6 +170,7 @@
   },
   "left-ribbon": {
     "hiddenItems": {
+      "bases:Create new base": false,
       "switcher:Open quick switcher": false,
       "graph:Open graph view": false,
       "canvas:Create new canvas": false,
@@ -177,44 +179,44 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "0bcc92d10e1a85ef",
+  "active": "0accbddd72860313",
   "lastOpenFiles": [
+    "DemianforPHP/Мидловое/Инфраструктура/Lens.md",
+    "DemianforPHP/Мидловое/Инфраструктура",
+    "DemianforPHP/Прикладное.md",
+    "DemianforPHP/Мидловое/Брокеры сообщений/Kafka.md",
+    "DemianforPHP/Мидловое/Брокеры сообщений/RabbitMQ.md",
+    "DemianforPHP/Мидловое/Брокеры сообщений/SQS.md",
+    "DemianforPHP/Мидловое/Брокеры сообщений/Redis.md",
+    "DemianforPHP/Мидловое/Брокеры сообщений/Прикладное.md",
+    "DemianforPHP/Мидловое/Брокеры сообщений/Брокеры сообщений.md",
+    "DemianforPHP/Мидловое/Многоуровневая архитектура/Общее.md",
+    "DemianforPHP/1. Переменные и выражения.md",
+    "DemianforPHP/Мидловое/Подготовка/Вопросы.md",
+    "DemianforPHP/Мидловое/SSE/Для Frontend.md",
+    "DemianforPHP/Мидловое/Подготовка",
+    "DemianforPHP/Мидловое/SSE/Общее.md",
+    "DemianforPHP/Мидловое/SSE/Под капотом.md",
     "DemianforPHP/Мидловое/Системы кеширования/Общее.md",
     "DemianforPHP/Мидловое/Управление памятью/Общее.md",
     "DemianforPHP/Мидловое/Управление памятью",
-    "DemianforPHP/Мидловое/Многоуровневая архитектура/Общее.md",
-    "DemianforPHP/Мидловое/Брокеры сообщений/Redis.md",
-    "DemianforPHP/Мидловое/Брокеры сообщений/SQS.md",
-    "DemianforPHP/Мидловое/Брокеры сообщений/Kafka.md",
-    "DemianforPHP/Мидловое/Брокеры сообщений/RabbitMQ.md",
     "DemianforPHP/Мидловое/Брокеры сообщений/Размеры пакетов и батчинг.md",
     "DemianforPHP/Мидловое/Брокеры сообщений/Различия между брокерами.md",
-    "DemianforPHP/Мидловое/Брокеры сообщений/Прикладное.md",
-    "DemianforPHP/Мидловое/Брокеры сообщений/Брокеры сообщений.md",
     "DemianforPHP/Мидловое/СУБДъ/Индексы.md",
     "DemianforPHP/Мидловое/СУБДъ/СУБДъ.md",
     "DemianforPHP/Мидловое/СУБДъ",
     "DemianforPHP/Symfony/Compiler Pass.md",
     "DemianforPHP/13. Перечисления.md",
-    "DemianforPHP/Прикладное.md",
     "DemianforPHP/Мидловое/Многоуровневая архитектура",
-    "DemianforPHP/Мидловое/SSE/Под капотом.md",
     "DemianforPHP/Мидловое/Системы кеширования",
-    "DemianforPHP/Мидловое/SSE/Для Frontend.md",
-    "DemianforPHP/Мидловое/SSE/Общее.md",
     "DemianforPHP/Мидловое/Email Sender/DSN и Transport.md",
     "DemianforPHP/Мидловое/SSE",
     "DemianforPHP/Мидловое/Email Sender/Под капотом.md",
     "DemianforPHP/Мидловое/Email Sender/Общее.md",
     "DemianforPHP/Мидловое/Best Practices/DRY.md",
-    "DemianforPHP/Мидловое/Best Practices/BDUF.md",
-    "DemianforPHP/Мидловое/Best Practices/AOP.md",
-    "DemianforPHP/Мидловое/Best Practices/Какие конструкции лучше не использовать?.md",
     "DemianforPHP/Мидловое/Email Sender",
     "DemianforPHP/Мидловое/Best Practices",
     "DemianforPHP/Мидловое/Брокеры сообщений/Untitled",
-    "DemianforPHP/Мидловое/Брокеры сообщений",
-    "DemianforPHP/Мидловое/FUS",
     "Pasted image 20250424125749.png",
     "Pasted image 20250424123943.png",
     "Pasted image 20250424123327.png",
